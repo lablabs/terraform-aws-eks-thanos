@@ -1,5 +1,5 @@
 
-# Thanos
+# kube-prometheus
 
 variable "enabled" {
   type        = bool
@@ -29,7 +29,7 @@ variable "helm_chart_version" {
 
 variable "helm_release_name" {
   type        = string
-  default     = "thanos"
+  default     = "kube-prometheus"
   description = "Helm release name"
 }
 
