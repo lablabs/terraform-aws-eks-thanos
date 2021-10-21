@@ -1,10 +1,46 @@
 
-# kube-prometheus
+# Thanos
 
 variable "enabled" {
   type        = bool
   default     = true
   description = "Variable indicating whether deployment is enabled"
+}
+
+variable "aws_account_id" {
+  type        = string
+  description = "AWS Account ID"
+}
+
+variable "cluster_name" {
+  type        = string
+  description = "The name of the cluster"
+}
+
+variable "cluster_identity_oidc_issuer" {
+  type        = string
+  description = "The OIDC Identity issuer for the cluster"
+}
+
+variable "cluster_identity_oidc_issuer_arn" {
+  type        = string
+  description = "The OIDC Identity issuer ARN for the cluster that can be used to associate IAM roles with a service account"
+}
+
+variable "thanos_storegateway_k8s_service_account_name" {
+  default = "thanos-storegateway"
+}
+
+variable "thanos_storeapi_k8s_service_account_name" {
+  default = "kube-prometheus-prometheus"
+}
+
+variable "thanos_compactor_k8s_service_account_name" {
+  default = "thanos-compactor"
+}
+
+variable "thanos_ruler_k8s_service_account_name" {
+  default = "thanos-ruler"
 }
 
 # Helm
@@ -17,19 +53,19 @@ variable "helm_create_namespace" {
 
 variable "helm_chart_name" {
   type        = string
-  default     = "kube-prometheus"
+  default     = "thanos"
   description = "Helm chart name to be installed"
 }
 
 variable "helm_chart_version" {
   type        = string
-  default     = "6.1.13"
+  default     = "6.0.13"
   description = "Version of the Helm chart"
 }
 
 variable "helm_release_name" {
   type        = string
-  default     = "kube-prometheus"
+  default     = "thanos"
   description = "Helm release name"
 }
 
@@ -85,7 +121,7 @@ variable "k8s_namespace" {
 
 variable "argo_namespace" {
   type        = string
-  default     = "argocd"
+  default     = "argo"
   description = "Namespace to deploy ArgoCD application CRD to"
 }
 
@@ -130,4 +166,30 @@ variable "argo_info" {
 variable "argo_sync_policy" {
   description = "ArgoCD syncPolicy manifest parameter"
   default     = {}
+}
+
+variable "name" {
+  type        = string
+  default     = null
+}
+variable "stage" {
+  type        = string
+  default     = null
+}
+variable "environment" {
+  type        = string
+  default     = null
+}
+variable "namespace" {
+  type        = string
+  default     = null
+}
+variable "tags" {
+  type        = map(any)
+  default     = null
+}
+
+variable "context" {
+  type        = any
+  default     = null
 }
