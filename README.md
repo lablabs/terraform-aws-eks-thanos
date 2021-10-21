@@ -1,3 +1,3 @@
-# Prometheus Terraform module
+# Thanos Terraform module
 
 > VIP
