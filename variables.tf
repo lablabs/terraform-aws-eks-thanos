@@ -7,11 +7,6 @@ variable "enabled" {
   description = "Variable indicating whether deployment is enabled"
 }
 
-variable "aws_account_id" {
-  type        = string
-  description = "AWS Account ID"
-}
-
 variable "cluster_name" {
   type        = string
   description = "The name of the cluster"
@@ -192,4 +187,18 @@ variable "tags" {
 variable "context" {
   type        = any
   default     = null
+}
+
+variable "thanos_remote_account_roles" {
+  type = list(object({
+    account_id  = string
+    role_arn    = string
+  }))
+  default     = []
+  description = "Remote AWS account roles"
+}
+
+variable "iam_role_only" {
+  type      = bool
+  default   = false
 }

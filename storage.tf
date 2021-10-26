@@ -6,7 +6,7 @@ module "thanos_s3" {
   version            = "0.42.0"
   acl                = "private"
   enabled            = var.enabled
-  policy             = data.aws_iam_policy_document.thanos_s3[0].json
+  policy             = local.s3_policy
   user_enabled       = false
   versioning_enabled = false
   kms_master_key_arn = module.thanos_key.key_arn
@@ -25,7 +25,7 @@ module "thanos_key" {
   version                 = "0.11.0"
   description             = "KMS key for thanos S3"
   deletion_window_in_days = 10
-  policy                  = data.aws_iam_policy_document.thanos_kms[0].json
+  policy                  = local.kms_policy
   enable_key_rotation     = true
   name                    = module.label.name
   stage                   = module.label.stage
@@ -34,49 +34,13 @@ module "thanos_key" {
   tags                    = module.label.tags
 }
 
-
 locals {
   object_name          = "${module.label.namespace}-${module.label.environment}-${module.label.stage}-${module.label.name}"
+  s3_policy            = length(var.thanos_remote_account_roles) == 0 ? data.aws_iam_policy_document.thanos_account[0].json : data.aws_iam_policy_document.thanos_cross_account[0].json
+  kms_policy           = length(var.thanos_remote_account_roles) == 0 ? data.aws_iam_policy_document.thanos_account_kms[0].json : data.aws_iam_policy_document.thanos_cross_account_kms[0].json
 }
 
-data "aws_iam_policy_document" "thanos_s3" {
-  count = var.enabled ? 1 : 0
-  statement {
-    sid     = "AllowBucketStoreAccess"
-    effect  = "Allow"
-    actions = [
-      "s3:ListBucket",
-      "s3:GetObject",
-      "s3:DeleteObject",
-      "s3:PutObject"
-    ]
-
-    resources = ["arn:aws:s3:::${local.object_name}", "arn:aws:s3:::${local.object_name}/*"]
-
-    principals {
-      type        = "AWS"
-      identifiers = ["arn:aws:iam::${var.aws_account_id}:root"]
-    }
-  }
-}
-
-data "aws_iam_policy_document" "thanos_kms" {
-  count = var.enabled ? 1 : 0
-  statement {
-    sid    = "AllowFullKMS"
-    effect = "Allow"
-    actions = [
-      "kms:*"
-    ]
-
-    resources = ["*"]
-
-    principals {
-      type        = "AWS"
-      identifiers = ["arn:aws:iam::${var.aws_account_id}:root"]
-    }
-  }
-}
+data "aws_caller_identity" "current" {}
 
 data "aws_iam_policy_document" "thanos" {
   count = var.enabled ? 1 : 0
@@ -84,7 +48,10 @@ data "aws_iam_policy_document" "thanos" {
     sid     = "FullObjectStorePermissions"
     effect  = "Allow"
     actions = [
-      "s3:*",
+      "s3:ListBucket",
+      "s3:GetObject",
+      "s3:DeleteObject",
+      "s3:PutObject"
     ]
     resources = ["arn:aws:s3:::${local.object_name}", "arn:aws:s3:::${local.object_name}/*"]
   }
@@ -97,6 +64,7 @@ data "aws_iam_policy_document" "thanos" {
       "kms:Decrypt"
     ]
     resources = [module.thanos_key.key_arn]
+    # resources = "arn:aws:kms:eu-central-1:533837855032:key/2d061d80-7a3d-404b-9dfe-5934468c516a"
     effect    = "Allow"
   }
 }
@@ -148,4 +116,105 @@ resource "aws_iam_role_policy_attachment" "thanos" {
   count      = var.enabled ? 1 : 0
   role       = aws_iam_role.thanos[0].name
   policy_arn = aws_iam_policy.thanos[0].arn
+}
+
+
+#########################
+
+data "aws_iam_policy_document" "thanos_account" {
+  count = var.enabled ? 1 : 0
+  statement {
+    sid     = "AllowBucketStoreAccess"
+    effect  = "Allow"
+    actions = [
+      "s3:ListBucket",
+      "s3:GetObject",
+      "s3:DeleteObject",
+      "s3:PutObject"
+    ]
+
+    resources = ["arn:aws:s3:::${local.object_name}", "arn:aws:s3:::${local.object_name}/*"]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"]
+    }
+  }
+}
+
+data "aws_iam_policy_document" "thanos_cross_account" {
+  count = var.enabled ? 1 : 0
+  statement {
+    sid    = "AllowBucketStoreAccess"
+    effect = "Allow"
+    actions = [
+      "s3:*"
+    ]
+
+    resources = ["arn:aws:s3:::${local.object_name}", "arn:aws:s3:::${local.object_name}/*"]
+
+    dynamic "principals" {
+      for_each = var.thanos_remote_account_roles
+      content {
+        identifiers = formatlist("arn:aws:iam::%s:role/%s", principals.value["account_id"], principals.value["role_arn"])
+        type        = "AWS"
+      }
+    }
+  }
+}
+
+data "aws_iam_policy_document" "thanos_account_kms" {
+  count = var.enabled ? 1 : 0
+  statement {
+    sid    = "AllowFullKMS"
+    effect = "Allow"
+    actions = [
+      "kms:*"
+    ]
+
+    resources = ["*"]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"]
+    }
+  }
+}
+
+data "aws_iam_policy_document" "thanos_cross_account_kms" {
+  count = var.enabled ? 1 : 0
+  statement {
+    sid    = "AllowFullKMS"
+    effect = "Allow"
+    actions = [
+      "kms:*"
+    ]
+
+    resources = ["*"]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"]
+    }
+  }
+
+  statement {
+    sid    = "AllowKMSEncryptDecrypt"
+    effect = "Allow"
+    actions = [
+      "kms:GenerateDataKey",
+      "kms:Encrypt",
+      "kms:Decrypt"
+    ]
+
+    resources = ["*"]
+
+    dynamic "principals" {
+      for_each = var.thanos_remote_account_roles
+      content {
+        identifiers = formatlist("arn:aws:iam::%s:role/%s", principals.value["account_id"], principals.value["role_arn"])
+        type        = "AWS"
+      }
+    }
+  }
 }
