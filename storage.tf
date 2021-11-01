@@ -168,6 +168,7 @@ data "aws_iam_policy_document" "thanos_account_kms" {
   statement {
     sid    = "AllowFullKMS"
     effect = "Allow"
+    #checkov:skip=CKV_AWS_111
     actions = [
       "kms:Create*",
       "kms:Describe*",
@@ -198,6 +199,7 @@ data "aws_iam_policy_document" "thanos_cross_account_kms" {
   statement {
     sid    = "AllowFullKMS"
     effect = "Allow"
+    #checkov:skip=CKV_AWS_111
     actions = [
       "kms:Create*",
       "kms:Describe*",
