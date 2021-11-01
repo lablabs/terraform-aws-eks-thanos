@@ -169,9 +169,21 @@ data "aws_iam_policy_document" "thanos_account_kms" {
     sid    = "AllowFullKMS"
     effect = "Allow"
     actions = [
-      "kms:*"
+      "kms:Create*",
+      "kms:Describe*",
+      "kms:Enable*",
+      "kms:List*",
+      "kms:Put*",
+      "kms:Update*",
+      "kms:Revoke*",
+      "kms:Disable*",
+      "kms:Get*",
+      "kms:Delete*",
+      "kms:ScheduleKeyDeletion",
+      "kms:CancelKeyDeletion"
     ]
 
+    #checkov:skip=CKV_AWS_109    
     resources = ["*"]
 
     principals {
@@ -187,9 +199,21 @@ data "aws_iam_policy_document" "thanos_cross_account_kms" {
     sid    = "AllowFullKMS"
     effect = "Allow"
     actions = [
-      "kms:*"
+      "kms:Create*",
+      "kms:Describe*",
+      "kms:Enable*",
+      "kms:List*",
+      "kms:Put*",
+      "kms:Update*",
+      "kms:Revoke*",
+      "kms:Disable*",
+      "kms:Get*",
+      "kms:Delete*",
+      "kms:ScheduleKeyDeletion",
+      "kms:CancelKeyDeletion"
     ]
 
+    #checkov:skip=CKV_AWS_109
     resources = ["*"]
 
     principals {
@@ -207,6 +231,7 @@ data "aws_iam_policy_document" "thanos_cross_account_kms" {
       "kms:Decrypt"
     ]
 
+    #checkov:skip=CKV_AWS_109
     resources = ["*"]
 
     dynamic "principals" {
