@@ -7,11 +7,6 @@ variable "enabled" {
   description = "Variable indicating whether deployment is enabled"
 }
 
-variable "cluster_name" {
-  type        = string
-  description = "The name of the cluster"
-}
-
 variable "cluster_identity_oidc_issuer" {
   type        = string
   description = "The OIDC Identity issuer for the cluster"
@@ -22,12 +17,25 @@ variable "cluster_identity_oidc_issuer_arn" {
   description = "The OIDC Identity issuer ARN for the cluster that can be used to associate IAM roles with a service account"
 }
 
+variable "thanos_remote_account_roles" {
+  type = list(object({
+    account_id  = string
+    role_arn    = string
+  }))
+  default     = []
+  description = "Remote AWS service account roles"
+}
+
 variable "thanos_storegateway_k8s_service_account_name" {
   default = "thanos-storegateway"
 }
 
 variable "thanos_storeapi_k8s_service_account_name" {
   default = "kube-prometheus-prometheus"
+}
+
+variable "thanos_bucketweb_k8s_service_account_name" {
+  default = "thanos-bucketweb"
 }
 
 variable "thanos_compactor_k8s_service_account_name" {
@@ -163,6 +171,8 @@ variable "argo_sync_policy" {
   default     = {}
 }
 
+# Amazon Rekognition Custom Labels
+
 variable "name" {
   type        = string
   default     = null
@@ -187,18 +197,4 @@ variable "tags" {
 variable "context" {
   type        = any
   default     = null
-}
-
-variable "thanos_remote_account_roles" {
-  type = list(object({
-    account_id  = string
-    role_arn    = string
-  }))
-  default     = []
-  description = "Remote AWS account roles"
-}
-
-variable "iam_role_only" {
-  type      = bool
-  default   = false
 }

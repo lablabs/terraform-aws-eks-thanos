@@ -64,7 +64,6 @@ data "aws_iam_policy_document" "thanos" {
       "kms:Decrypt"
     ]
     resources = [module.thanos_key.key_arn]
-    # resources = "arn:aws:kms:eu-central-1:533837855032:key/2d061d80-7a3d-404b-9dfe-5934468c516a"
     effect    = "Allow"
   }
 }
@@ -98,6 +97,7 @@ data "aws_iam_policy_document" "thanos_assume" {
         "system:serviceaccount:${var.k8s_namespace}:${var.thanos_storeapi_k8s_service_account_name}",
         "system:serviceaccount:${var.k8s_namespace}:${var.thanos_compactor_k8s_service_account_name}",
         "system:serviceaccount:${var.k8s_namespace}:${var.thanos_ruler_k8s_service_account_name}",
+        "system:serviceaccount:${var.k8s_namespace}:${var.thanos_bucketweb_k8s_service_account_name}",
       ]
     }
 
@@ -107,7 +107,7 @@ data "aws_iam_policy_document" "thanos_assume" {
 
 resource "aws_iam_role" "thanos" {
   count              = var.enabled ? 1 : 0
-  name               = "${local.object_name}-role"
+  name               = "${local.object_name}-thanos-role"
   assume_role_policy = data.aws_iam_policy_document.thanos_assume[0].json
   tags               = module.label.tags
 }
@@ -117,9 +117,6 @@ resource "aws_iam_role_policy_attachment" "thanos" {
   role       = aws_iam_role.thanos[0].name
   policy_arn = aws_iam_policy.thanos[0].arn
 }
-
-
-#########################
 
 data "aws_iam_policy_document" "thanos_account" {
   count = var.enabled ? 1 : 0
@@ -148,7 +145,10 @@ data "aws_iam_policy_document" "thanos_cross_account" {
     sid    = "AllowBucketStoreAccess"
     effect = "Allow"
     actions = [
-      "s3:*"
+      "s3:ListBucket",
+      "s3:GetObject",
+      "s3:DeleteObject",
+      "s3:PutObject"
     ]
 
     resources = ["arn:aws:s3:::${local.object_name}", "arn:aws:s3:::${local.object_name}/*"]
@@ -217,4 +217,14 @@ data "aws_iam_policy_document" "thanos_cross_account_kms" {
       }
     }
   }
+}
+
+output "thanos_s3_arn" {
+  value       = module.thanos_s3.bucket_arn
+  description = "Thanos S3 bucket ARN"
+}
+
+output "thanos_kms_arn" {
+  value       = module.thanos_key.key_arn
+  description = "Thanos KMS ARN"
 }
