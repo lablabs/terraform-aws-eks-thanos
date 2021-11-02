@@ -170,18 +170,7 @@ data "aws_iam_policy_document" "thanos_account_kms" {
     effect = "Allow"
     #checkov:skip=CKV_AWS_111
     actions = [
-      "kms:Create*",
-      "kms:Describe*",
-      "kms:Enable*",
-      "kms:List*",
-      "kms:Put*",
-      "kms:Update*",
-      "kms:Revoke*",
-      "kms:Disable*",
-      "kms:Get*",
-      "kms:Delete*",
-      "kms:ScheduleKeyDeletion",
-      "kms:CancelKeyDeletion"
+      "kms:*"
     ]
 
     #checkov:skip=CKV_AWS_109    
@@ -201,18 +190,7 @@ data "aws_iam_policy_document" "thanos_cross_account_kms" {
     effect = "Allow"
     #checkov:skip=CKV_AWS_111
     actions = [
-      "kms:Create*",
-      "kms:Describe*",
-      "kms:Enable*",
-      "kms:List*",
-      "kms:Put*",
-      "kms:Update*",
-      "kms:Revoke*",
-      "kms:Disable*",
-      "kms:Get*",
-      "kms:Delete*",
-      "kms:ScheduleKeyDeletion",
-      "kms:CancelKeyDeletion"
+      "kms:*"
     ]
 
     #checkov:skip=CKV_AWS_109
