@@ -36,8 +36,8 @@ module "thanos_key" {
 
 locals {
   object_name          = "${module.label.namespace}-${module.label.environment}-${module.label.stage}-${module.label.name}"
-  s3_policy            = length(var.thanos_remote_account_roles) == 0 ? data.aws_iam_policy_document.thanos_account[0].json : data.aws_iam_policy_document.thanos_cross_account[0].json
-  kms_policy           = length(var.thanos_remote_account_roles) == 0 ? data.aws_iam_policy_document.thanos_account_kms[0].json : data.aws_iam_policy_document.thanos_cross_account_kms[0].json
+  s3_policy            = length(var.thanos_s3_access) == 0 ? data.aws_iam_policy_document.thanos_account[0].json : data.aws_iam_policy_document.thanos_cross_account[0].json
+  kms_policy           = length(var.thanos_s3_access) == 0 ? data.aws_iam_policy_document.thanos_account_kms[0].json : data.aws_iam_policy_document.thanos_cross_account_kms[0].json
 }
 
 data "aws_caller_identity" "current" {}
@@ -154,9 +154,9 @@ data "aws_iam_policy_document" "thanos_cross_account" {
     resources = ["arn:aws:s3:::${local.object_name}", "arn:aws:s3:::${local.object_name}/*"]
 
     dynamic "principals" {
-      for_each = var.thanos_remote_account_roles
+      for_each = var.thanos_s3_access
       content {
-        identifiers = formatlist("arn:aws:iam::%s:role/%s", principals.value["account_id"], principals.value["role_arn"])
+        identifiers = formatlist("arn:aws:iam::%s:root", principals.value)
         type        = "AWS"
       }
     }
@@ -215,9 +215,9 @@ data "aws_iam_policy_document" "thanos_cross_account_kms" {
     resources = ["*"]
 
     dynamic "principals" {
-      for_each = var.thanos_remote_account_roles
+      for_each = var.thanos_s3_access
       content {
-        identifiers = formatlist("arn:aws:iam::%s:role/%s", principals.value["account_id"], principals.value["role_arn"])
+        identifiers = formatlist("arn:aws:iam::%s:root", principals.value)
         type        = "AWS"
       }
     }
@@ -229,7 +229,16 @@ output "thanos_s3_arn" {
   description = "Thanos S3 bucket ARN"
 }
 
+output "thanos_s3_id" {
+  value       = module.thanos_s3.bucket_id
+  description = "Thanos S3 bucket id (name)"
+}
+
 output "thanos_kms_arn" {
   value       = module.thanos_key.key_arn
   description = "Thanos KMS ARN"
+}
+
+output "thanos_sa_role_arn" {
+  value = aws_iam_role.thanos[0].arn
 }

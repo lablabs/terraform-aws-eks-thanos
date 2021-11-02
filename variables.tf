@@ -17,13 +17,10 @@ variable "cluster_identity_oidc_issuer_arn" {
   description = "The OIDC Identity issuer ARN for the cluster that can be used to associate IAM roles with a service account"
 }
 
-variable "thanos_remote_account_roles" {
-  type = list(object({
-    account_id  = string
-    role_arn    = string
-  }))
+variable "thanos_s3_access" {
+  type = list(any)
   default     = []
-  description = "Remote AWS service account roles"
+  description = "AWS accounts with access to Thanos S3 bucket"
 }
 
 variable "thanos_storegateway_k8s_service_account_name" {
