@@ -17,6 +17,42 @@ variable "cluster_identity_oidc_issuer_arn" {
   description = "The OIDC Identity issuer ARN for the cluster that can be used to associate IAM roles with a service account"
 }
 
+variable "thanos_query" {
+  type        = bool
+  default     = true
+  description = ""
+}
+
+variable "thanos_queryfrontend" {
+  type        = bool
+  default     = true
+  description = ""
+}
+
+variable "thanos_storegateway" {
+  type        = bool
+  default     = true
+  description = ""
+}
+
+variable "thanos_compactor" {
+  type        = bool
+  default     = true
+  description = ""
+}
+
+variable "thanos_bucketweb" {
+  type        = bool
+  default     = true
+  description = ""
+}
+
+variable "thanos_query_stores" {
+  type = list(any)
+  default     = []
+  description = "List of Thanos stores"
+}
+
 variable "thanos_s3_access" {
   type = list(any)
   default     = []
