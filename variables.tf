@@ -203,31 +203,3 @@ variable "argo_sync_policy" {
   description = "ArgoCD syncPolicy manifest parameter"
   default     = {}
 }
-
-# Amazon Rekognition Custom Labels
-
-variable "name" {
-  type        = string
-  default     = null
-}
-variable "stage" {
-  type        = string
-  default     = null
-}
-variable "environment" {
-  type        = string
-  default     = null
-}
-variable "namespace" {
-  type        = string
-  default     = null
-}
-variable "tags" {
-  type        = map(any)
-  default     = null
-}
-
-variable "context" {
-  type        = any
-  default     = null
-}
