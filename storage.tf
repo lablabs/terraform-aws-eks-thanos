@@ -36,8 +36,8 @@ module "thanos_key" {
 
 locals {
   object_name          = "${module.label.namespace}-${module.label.environment}-${module.label.stage}-${module.label.name}"
-  s3_policy            = length(var.thanos_s3_access) == 0 ? data.aws_iam_policy_document.thanos_account[0].json : data.aws_iam_policy_document.thanos_cross_account[0].json
-  kms_policy           = length(var.thanos_s3_access) == 0 ? data.aws_iam_policy_document.thanos_account_kms[0].json : data.aws_iam_policy_document.thanos_cross_account_kms[0].json
+  s3_policy            = length(var.thanos_s3_access) == 0 ? try(data.aws_iam_policy_document.thanos_account[0].json, null) : try(data.aws_iam_policy_document.thanos_cross_account[0].json, null)
+  kms_policy           = length(var.thanos_s3_access) == 0 ? try(data.aws_iam_policy_document.thanos_account_kms[0].json, null) : try(data.aws_iam_policy_document.thanos_cross_account_kms[0].json, null)
 }
 
 data "aws_caller_identity" "current" {}
@@ -240,5 +240,6 @@ output "thanos_kms_arn" {
 }
 
 output "thanos_sa_role_arn" {
-  value = aws_iam_role.thanos[0].arn
+  value = try(aws_iam_role.thanos[0].arn, {})
+  description = "Thanos Service Account ARN"
 }

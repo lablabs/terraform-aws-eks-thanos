@@ -12,7 +12,7 @@ locals {
       enabled : "${var.thanos_storegateway}"
       serviceAccount : {
         annotations : {
-          "eks.amazonaws.com/role-arn" : "${aws_iam_role.thanos[0].arn}"
+          "eks.amazonaws.com/role-arn" : "${try(aws_iam_role.thanos[0].arn, {})}"
         }
       }
       sharded : {
@@ -23,7 +23,7 @@ locals {
       enabled : "${var.thanos_compactor}"
       serviceAccount : {
         annotations : {
-          "eks.amazonaws.com/role-arn" : "${aws_iam_role.thanos[0].arn}"
+          "eks.amazonaws.com/role-arn" : "${try(aws_iam_role.thanos[0].arn, {})}"
         }
       }
     }
@@ -31,7 +31,7 @@ locals {
       enabled : "${var.thanos_bucketweb}"
       serviceAccount : {
         annotations : {
-          "eks.amazonaws.com/role-arn" : "${aws_iam_role.thanos[0].arn}"
+          "eks.amazonaws.com/role-arn" : "${try(aws_iam_role.thanos[0].arn, {})}"
         }
       }
     }
