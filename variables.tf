@@ -17,68 +17,6 @@ variable "cluster_identity_oidc_issuer_arn" {
   description = "The OIDC Identity issuer ARN for the cluster that can be used to associate IAM roles with a service account"
 }
 
-variable "thanos_query" {
-  type        = bool
-  default     = true
-  description = ""
-}
-
-variable "thanos_queryfrontend" {
-  type        = bool
-  default     = true
-  description = ""
-}
-
-variable "thanos_storegateway" {
-  type        = bool
-  default     = true
-  description = ""
-}
-
-variable "thanos_compactor" {
-  type        = bool
-  default     = true
-  description = ""
-}
-
-variable "thanos_bucketweb" {
-  type        = bool
-  default     = true
-  description = ""
-}
-
-variable "thanos_query_stores" {
-  type = list(any)
-  default     = []
-  description = "List of Thanos stores"
-}
-
-variable "thanos_s3_access" {
-  type = list(any)
-  default     = []
-  description = "AWS accounts with access to Thanos S3 bucket"
-}
-
-variable "thanos_storegateway_k8s_service_account_name" {
-  default = "thanos-storegateway"
-}
-
-variable "thanos_storeapi_k8s_service_account_name" {
-  default = "kube-prometheus-prometheus"
-}
-
-variable "thanos_bucketweb_k8s_service_account_name" {
-  default = "thanos-bucketweb"
-}
-
-variable "thanos_compactor_k8s_service_account_name" {
-  default = "thanos-compactor"
-}
-
-variable "thanos_ruler_k8s_service_account_name" {
-  default = "thanos-ruler"
-}
-
 # Helm
 
 variable "helm_create_namespace" {
@@ -153,6 +91,68 @@ variable "k8s_namespace" {
   description = "The K8s namespace in which the ingress-nginx has been created"
 }
 
+variable "thanos_query" {
+  type        = bool
+  default     = true
+  description = "Deploy Thanos Query"
+}
+
+variable "thanos_queryfrontend" {
+  type        = bool
+  default     = true
+  description = "Deploy Thanos Query Frontend"
+}
+
+variable "thanos_storegateway" {
+  type        = bool
+  default     = true
+  description = "Deploy Thanos Storage gateway"
+}
+
+variable "thanos_compactor" {
+  type        = bool
+  default     = true
+  description = "Deploy Thanos Compactor"
+}
+
+variable "thanos_bucketweb" {
+  type        = bool
+  default     = true
+  description = "Deploy Thanos Bucket Web"
+}
+
+variable "thanos_query_stores" {
+  type = list(any)
+  default     = []
+  description = "List of Thanos stores"
+}
+
+variable "thanos_s3_access" {
+  type = list(any)
+  default     = []
+  description = "AWS accounts with access to Thanos S3 bucket"
+}
+
+variable "thanos_storegateway_k8s_service_account_name" {
+  default = "thanos-storegateway"
+}
+
+variable "thanos_storeapi_k8s_service_account_name" {
+  default = "kube-prometheus-prometheus"
+}
+
+variable "thanos_bucketweb_k8s_service_account_name" {
+  default = "thanos-bucketweb"
+}
+
+variable "thanos_compactor_k8s_service_account_name" {
+  default = "thanos-compactor"
+}
+
+variable "thanos_ruler_k8s_service_account_name" {
+  default = "thanos-ruler"
+}
+
 # ArgoCD
 
 variable "argo_namespace" {
@@ -160,7 +160,6 @@ variable "argo_namespace" {
   default     = "argo"
   description = "Namespace to deploy ArgoCD application CRD to"
 }
-
 
 variable "argo_application_enabled" {
   type        = bool
