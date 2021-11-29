@@ -136,6 +136,7 @@ To overcome this issue, the module deploys the ArgoCD application object using t
 
 | Name | Description |
 |------|-------------|
+| <a name="output_test"></a> [test](#output\_test) | n/a |
 | <a name="output_thanos_kms_arn"></a> [thanos\_kms\_arn](#output\_thanos\_kms\_arn) | Thanos KMS ARN |
 | <a name="output_thanos_s3_arn"></a> [thanos\_s3\_arn](#output\_thanos\_s3\_arn) | Thanos S3 bucket ARN |
 | <a name="output_thanos_s3_id"></a> [thanos\_s3\_id](#output\_thanos\_s3\_id) | Thanos S3 bucket id (name) |
