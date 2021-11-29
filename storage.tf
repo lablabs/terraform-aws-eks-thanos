@@ -22,7 +22,7 @@ module "thanos_s3" {
 
 module "thanos_key" {
   source                  = "cloudposse/kms-key/aws"
-  enabled            = var.enabled
+  enabled                 = var.enabled
   version                 = "0.11.0"
   description             = "KMS key for thanos S3"
   deletion_window_in_days = 10
@@ -36,9 +36,9 @@ module "thanos_key" {
 }
 
 locals {
-  object_name          = "${var.namespace}-${var.environment}-${var.stage}-${var.name}"
-  s3_policy            = length(var.thanos_s3_access) == 0 ? try(data.aws_iam_policy_document.thanos_account[0].json, null) : try(data.aws_iam_policy_document.thanos_cross_account[0].json, null)
-  kms_policy           = length(var.thanos_s3_access) == 0 ? try(data.aws_iam_policy_document.thanos_account_kms[0].json, null) : try(data.aws_iam_policy_document.thanos_cross_account_kms[0].json, null)
+  object_name = "${var.namespace}-${var.environment}-${var.stage}-${var.name}"
+  s3_policy   = length(var.thanos_s3_access) == 0 ? try(data.aws_iam_policy_document.thanos_account[0].json, null) : try(data.aws_iam_policy_document.thanos_cross_account[0].json, null)
+  kms_policy  = length(var.thanos_s3_access) == 0 ? try(data.aws_iam_policy_document.thanos_account_kms[0].json, null) : try(data.aws_iam_policy_document.thanos_cross_account_kms[0].json, null)
 }
 
 data "aws_caller_identity" "current" {}
@@ -46,8 +46,8 @@ data "aws_caller_identity" "current" {}
 data "aws_iam_policy_document" "thanos" {
   count = var.enabled ? 1 : 0
   statement {
-    sid     = "FullObjectStorePermissions"
-    effect  = "Allow"
+    sid    = "FullObjectStorePermissions"
+    effect = "Allow"
     actions = [
       "s3:ListBucket",
       "s3:GetObject",
@@ -122,8 +122,8 @@ resource "aws_iam_role_policy_attachment" "thanos" {
 data "aws_iam_policy_document" "thanos_account" {
   count = var.enabled ? 1 : 0
   statement {
-    sid     = "AllowBucketStoreAccess"
-    effect  = "Allow"
+    sid    = "AllowBucketStoreAccess"
+    effect = "Allow"
     actions = [
       "s3:ListBucket",
       "s3:GetObject",
@@ -174,7 +174,7 @@ data "aws_iam_policy_document" "thanos_account_kms" {
       "kms:*"
     ]
 
-    #checkov:skip=CKV_AWS_109    
+    #checkov:skip=CKV_AWS_109
     resources = ["*"]
 
     principals {

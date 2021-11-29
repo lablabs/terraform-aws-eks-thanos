@@ -122,13 +122,13 @@ variable "thanos_bucketweb" {
 }
 
 variable "thanos_query_stores" {
-  type = list(any)
+  type        = list(any)
   default     = []
   description = "List of Thanos stores"
 }
 
 variable "thanos_s3_access" {
-  type = list(any)
+  type        = list(any)
   default     = []
   description = "AWS accounts with access to Thanos S3 bucket"
 }

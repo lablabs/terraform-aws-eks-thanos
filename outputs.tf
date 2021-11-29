@@ -19,6 +19,6 @@ output "thanos_kms_arn" {
 }
 
 output "thanos_sa_role_arn" {
-  value = try(aws_iam_role.thanos[0].arn, {})
+  value       = try(aws_iam_role.thanos[0].arn, {})
   description = "Thanos Service Account ARN"
 }
