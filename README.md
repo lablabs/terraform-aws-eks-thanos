@@ -146,10 +146,6 @@ No modules.
 | <a name="output_grafana_database_secret"></a> [grafana\_database\_secret](#output\_grafana\_database\_secret) | Secret to Grafana Database |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
-## Secrets
-
-The Module is able read the secret for Grafana Database and for the Grafana Dashboards private repository from the AWS Secrets manager (ASM). With variables `grafana_dashboards_repo_secret` and `grafana_database_secret` you can specify the name of ASM secret.
-
 ## Contributing and reporting issues
 
 Feel free to create an issue in this repository if you have questions, suggestions or feature requests.
