@@ -24,11 +24,11 @@ locals {
       additional_policies = var.thanos_compactor_irsa_additional_policies
       role_arn            = var.thanos_compactor_role_arn
     }
-    storagegateway = {
-      enabled             = var.enabled && var.thanos_storagegateway_enabled
-      service_account     = var.thanos_storagegateway_service_account_name
-      additional_policies = var.thanos_storagegateway_irsa_additional_policies
-      role_arn            = var.thanos_storagegateway_role_arn
+    storegateway = {
+      enabled             = var.enabled && var.thanos_storegateway_enabled
+      service_account     = var.thanos_storegateway_service_account_name
+      additional_policies = var.thanos_storegateway_irsa_additional_policies
+      role_arn            = var.thanos_storegateway_role_arn
     }
     ruler = {
       enabled             = var.enabled && var.thanos_ruler_enabled

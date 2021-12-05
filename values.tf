@@ -32,11 +32,11 @@ locals {
         }
       }
     }
-    storagegateway : {
-      enabled : var.thanos_storagegateway_enabled
+    storegateway : {
+      enabled : var.thanos_storegateway_enabled
       serviceAccount : {
         annotations : {
-          "eks.amazonaws.com/role-arn" : try(aws_iam_role.this["storagegateway"].arn, var.thanos_storagegateway_role_arn)
+          "eks.amazonaws.com/role-arn" : try(aws_iam_role.this["storegateway"].arn, var.thanos_storegateway_role_arn)
         }
       }
     }

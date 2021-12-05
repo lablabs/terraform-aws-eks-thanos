@@ -193,25 +193,25 @@ variable "thanos_compactor_role_arn" {
 }
 
 
-variable "thanos_storagegateway_enabled" {
+variable "thanos_storegateway_enabled" {
   type        = bool
   default     = false
   description = "Set to true to enable Thanos Store Gateway component"
 }
 
-variable "thanos_storagegateway_service_account_name" {
+variable "thanos_storegateway_service_account_name" {
   type        = string
   default     = "thanos-storegateway"
   description = "Name for Thanos Store Gateway Service Account"
 }
 
-variable "thanos_storagegateway_irsa_additional_policies" {
+variable "thanos_storegateway_irsa_additional_policies" {
   type        = map(string)
   default     = {}
   description = "Map of the additional policies arns to be attached to default role. Where key is arbiraty id and value is policy arn."
 }
 
-variable "thanos_storagegateway_role_arn" {
+variable "thanos_storegateway_role_arn" {
   default     = ""
   description = "Whether to create and use default role or use existing role. Useful for a variety of use cases, such as cross account access. Default (empty string) use default generted role."
 }
