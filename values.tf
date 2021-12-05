@@ -1,46 +1,67 @@
 locals {
-
   values = yamlencode({
     query : {
-      enabled : "${var.thanos_query}"
-      stores : "${var.thanos_query_stores}"
-    }
-    queryFrontend : {
-      enabled : "${var.thanos_queryfrontend}"
-    }
-    storegateway : {
-      enabled : "${var.thanos_storegateway}"
+      enabled : var.thanos_query_enabled
       serviceAccount : {
         annotations : {
-          "eks.amazonaws.com/role-arn" : "${try(aws_iam_role.thanos[0].arn, {})}"
+          "eks.amazonaws.com/role-arn" : try(aws_iam_role.this["query"].arn, var.thanos_query_role_arn)
         }
       }
-      sharded : {
-        enabled : true
-      }
     }
-    compactor : {
-      enabled : "${var.thanos_compactor}"
+    queryFrontend : {
+      enabled : var.thanos_queryfrontend_enabled
       serviceAccount : {
         annotations : {
-          "eks.amazonaws.com/role-arn" : "${try(aws_iam_role.thanos[0].arn, {})}"
+          "eks.amazonaws.com/role-arn" : try(aws_iam_role.this["queryFrontend"].arn, var.thanos_queryfrontend_role_arn)
         }
       }
     }
     bucketweb : {
-      enabled : "${var.thanos_bucketweb}"
+      enabled : var.thanos_bucketweb_enabled
       serviceAccount : {
         annotations : {
-          "eks.amazonaws.com/role-arn" : "${try(aws_iam_role.thanos[0].arn, {})}"
+          "eks.amazonaws.com/role-arn" : try(aws_iam_role.this["bucketweb"].arn, var.thanos_bucketweb_role_arn)
         }
       }
     }
-    objstoreConfig : {
-      type : "S3",
-      config : {
-        bucket : "${module.thanos_s3.bucket_id}",
-        region : "${module.thanos_s3.bucket_region}",
-        endpoint : "s3.${module.thanos_s3.bucket_region}.amazonaws.com"
+    compactor : {
+      enabled : var.thanos_compactor_enabled
+      serviceAccount : {
+        annotations : {
+          "eks.amazonaws.com/role-arn" : try(aws_iam_role.this["compactor"].arn, var.thanos_compactor_role_arn)
+        }
+      }
+    }
+    storagegateway : {
+      enabled : var.thanos_storagegateway_enabled
+      serviceAccount : {
+        annotations : {
+          "eks.amazonaws.com/role-arn" : try(aws_iam_role.this["storagegateway"].arn, var.thanos_storagegateway_role_arn)
+        }
+      }
+    }
+    ruler : {
+      enabled : var.thanos_ruler_enabled
+      serviceAccount : {
+        annotations : {
+          "eks.amazonaws.com/role-arn" : try(aws_iam_role.this["ruler"].arn, var.thanos_ruler_role_arn)
+        }
+      }
+    }
+    receive : {
+      enabled : var.thanos_receive_enabled
+      serviceAccount : {
+        annotations : {
+          "eks.amazonaws.com/role-arn" : try(aws_iam_role.this["receive"].arn, var.thanos_receive_role_arn)
+        }
+      }
+    }
+    receiveDistributor : {
+      enabled : var.thanos_receivedistributor_enabled
+      serviceAccount : {
+        annotations : {
+          "eks.amazonaws.com/role-arn" : try(aws_iam_role.this["receivedistributor"].arn, var.thanos_receivedistributor_role_arn)
+        }
       }
     }
   })

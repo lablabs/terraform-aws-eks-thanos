@@ -1,24 +1,19 @@
-output "thanos_s3_arn" {
-  value       = module.thanos_s3.bucket_arn
-  description = "Thanos S3 bucket ARN"
+output "helm_release_metadata" {
+  description = "Helm release attributes"
+  value       = try(helm_release.this[0].metadata, {})
 }
 
-output "thanos_s3_id" {
-  value       = module.thanos_s3.bucket_id
-  description = "Thanos S3 bucket id (name)"
+output "helm_release_application_metadata" {
+  description = "Argo application helm release attributes"
+  value       = try(helm_release.argocd_application[0].metadata, {})
 }
 
-output "thanos_s3_region" {
-  value       = module.thanos_s3.bucket_region
-  description = "Thanos S3 bucket region"
+output "kubernetes_application_attributes" {
+  description = "Argo kubernetes manifest attributes"
+  value       = try(kubernetes_manifest.this, {})
 }
 
-output "thanos_kms_arn" {
-  value       = module.thanos_key.key_arn
-  description = "Thanos KMS ARN"
-}
-
-output "thanos_sa_role_arn" {
-  value       = try(aws_iam_role.thanos[0].arn, {})
-  description = "Thanos Service Account ARN"
+output "iam_roles_attributes" {
+  description = "Map of the IAM role atributes where key is component name"
+  value       = try(aws_iam_role.this, {})
 }

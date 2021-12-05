@@ -60,28 +60,18 @@ To overcome this issue, the module deploys the ArgoCD application object using t
 
 ## Modules
 
-| Name | Source | Version |
-|------|--------|---------|
-| <a name="module_thanos_key"></a> [thanos\_key](#module\_thanos\_key) | cloudposse/kms-key/aws | 0.11.0 |
-| <a name="module_thanos_s3"></a> [thanos\_s3](#module\_thanos\_s3) | cloudposse/s3-bucket/aws | 0.42.0 |
+No modules.
 
 ## Resources
 
 | Name | Type |
 |------|------|
-| [aws_iam_policy.thanos](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
-| [aws_iam_role.thanos](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
-| [aws_iam_role_policy_attachment.thanos](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
+| [aws_iam_role.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
+| [aws_iam_role_policy_attachment.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [helm_release.argocd_application](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
 | [helm_release.this](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
-| [kubernetes_manifest.self](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/manifest) | resource |
-| [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
-| [aws_iam_policy_document.thanos](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
-| [aws_iam_policy_document.thanos_account](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
-| [aws_iam_policy_document.thanos_account_kms](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
-| [aws_iam_policy_document.thanos_assume](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
-| [aws_iam_policy_document.thanos_cross_account](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
-| [aws_iam_policy_document.thanos_cross_account_kms](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
+| [kubernetes_manifest.this](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/manifest) | resource |
+| [aws_iam_policy_document.this_irsa](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [utils_deep_merge_yaml.argo_application_values](https://registry.terraform.io/providers/cloudposse/utils/latest/docs/data-sources/deep_merge_yaml) | data source |
 | [utils_deep_merge_yaml.values](https://registry.terraform.io/providers/cloudposse/utils/latest/docs/data-sources/deep_merge_yaml) | data source |
 
@@ -99,10 +89,7 @@ To overcome this issue, the module deploys the ArgoCD application object using t
 | <a name="input_argo_namespace"></a> [argo\_namespace](#input\_argo\_namespace) | Namespace to deploy ArgoCD application CRD to | `string` | `"argo"` | no |
 | <a name="input_argo_project"></a> [argo\_project](#input\_argo\_project) | ArgoCD Application project | `string` | `"default"` | no |
 | <a name="input_argo_sync_policy"></a> [argo\_sync\_policy](#input\_argo\_sync\_policy) | ArgoCD syncPolicy manifest parameter | `map` | `{}` | no |
-| <a name="input_attributes"></a> [attributes](#input\_attributes) | ID element. Additional attributes (e.g. `workers` or `cluster`) to add to `id`,<br>in the order they appear in the list. New attributes are appended to the<br>end of the list. The elements of the list are joined by the `delimiter`<br>and treated as a single ID element. | `list(string)` | `[]` | no |
-| <a name="input_context"></a> [context](#input\_context) | Single object for setting entire context at once.<br>See description of individual variables for details.<br>Leave string and numeric variables as `null` to use default value.<br>Individual variable settings (non-null) override settings in context object,<br>except for attributes, tags, and additional\_tag\_map, which are merged. | `any` | <pre>{<br>  "additional_tag_map": {},<br>  "attributes": [],<br>  "delimiter": null,<br>  "descriptor_formats": {},<br>  "enabled": true,<br>  "environment": null,<br>  "id_length_limit": null,<br>  "label_key_case": null,<br>  "label_order": [],<br>  "label_value_case": null,<br>  "labels_as_tags": [<br>    "unset"<br>  ],<br>  "name": null,<br>  "namespace": null,<br>  "regex_replace_chars": null,<br>  "stage": null,<br>  "tags": {},<br>  "tenant": null<br>}</pre> | no |
 | <a name="input_enabled"></a> [enabled](#input\_enabled) | Variable indicating whether deployment is enabled | `bool` | `true` | no |
-| <a name="input_environment"></a> [environment](#input\_environment) | ID element. Usually used for region e.g. 'uw2', 'us-west-2', OR role 'prod', 'staging', 'dev', 'UAT' | `string` | `null` | no |
 | <a name="input_helm_atomic"></a> [helm\_atomic](#input\_helm\_atomic) | If set, installation process purges chart on fail. The wait flag will be set automatically if atomic is used. Defaults to false. | `bool` | `false` | no |
 | <a name="input_helm_chart_name"></a> [helm\_chart\_name](#input\_helm\_chart\_name) | Helm chart name to be installed | `string` | `"thanos"` | no |
 | <a name="input_helm_chart_version"></a> [helm\_chart\_version](#input\_helm\_chart\_version) | Version of the Helm chart | `string` | `"6.0.13"` | no |
@@ -112,36 +99,52 @@ To overcome this issue, the module deploys the ArgoCD application object using t
 | <a name="input_helm_repo_url"></a> [helm\_repo\_url](#input\_helm\_repo\_url) | Helm repository | `string` | `"https://charts.bitnami.com/bitnami"` | no |
 | <a name="input_helm_timeout"></a> [helm\_timeout](#input\_helm\_timeout) | Time in seconds to wait for any individual kubernetes operation (like Jobs for hooks). Defaults to 300 seconds. | `number` | `300` | no |
 | <a name="input_helm_wait"></a> [helm\_wait](#input\_helm\_wait) | Will wait until all resources are in a ready state before marking the release as successful. It will wait for as long as timeout. Defaults to true. | `bool` | `true` | no |
-| <a name="input_k8s_namespace"></a> [k8s\_namespace](#input\_k8s\_namespace) | The K8s namespace in which the ingress-nginx has been created | `string` | `"monitoring"` | no |
-| <a name="input_name"></a> [name](#input\_name) | ID element. Usually the component or solution name, e.g. 'app' or 'jenkins'.<br>This is the only ID element not also included as a `tag`.<br>The "name" tag is set to the full `id` string. There is no tag with the value of the `name` input. | `string` | `null` | no |
-| <a name="input_namespace"></a> [namespace](#input\_namespace) | ID element. Usually an abbreviation of your organization name, e.g. 'eg' or 'cp', to help ensure generated IDs are globally unique | `string` | `null` | no |
+| <a name="input_k8s_irsa_role_name_prefix"></a> [k8s\_irsa\_role\_name\_prefix](#input\_k8s\_irsa\_role\_name\_prefix) | The IRSA role name prefix for thanos | `string` | `"thanos-irsa"` | no |
+| <a name="input_k8s_namespace"></a> [k8s\_namespace](#input\_k8s\_namespace) | The K8s namespace in which the ingress-nginx has been created | `string` | `"thanos"` | no |
 | <a name="input_settings"></a> [settings](#input\_settings) | Additional settings which will be passed to the Helm chart values, see https://artifacthub.io/packages/helm/argo/argo-cd | `map(any)` | `{}` | no |
-| <a name="input_stage"></a> [stage](#input\_stage) | ID element. Usually used to indicate role, e.g. 'prod', 'staging', 'source', 'build', 'test', 'deploy', 'release' | `string` | `null` | no |
-| <a name="input_tags"></a> [tags](#input\_tags) | Additional tags (e.g. `{'BusinessUnit': 'XYZ'}`).<br>Neither the tag keys nor the tag values will be modified by this module. | `map(string)` | `{}` | no |
-| <a name="input_thanos_bucketweb"></a> [thanos\_bucketweb](#input\_thanos\_bucketweb) | Deploy Thanos Bucket Web | `bool` | `true` | no |
-| <a name="input_thanos_bucketweb_k8s_service_account_name"></a> [thanos\_bucketweb\_k8s\_service\_account\_name](#input\_thanos\_bucketweb\_k8s\_service\_account\_name) | n/a | `string` | `"thanos-bucketweb"` | no |
-| <a name="input_thanos_compactor"></a> [thanos\_compactor](#input\_thanos\_compactor) | Deploy Thanos Compactor | `bool` | `true` | no |
-| <a name="input_thanos_compactor_k8s_service_account_name"></a> [thanos\_compactor\_k8s\_service\_account\_name](#input\_thanos\_compactor\_k8s\_service\_account\_name) | n/a | `string` | `"thanos-compactor"` | no |
-| <a name="input_thanos_query"></a> [thanos\_query](#input\_thanos\_query) | Deploy Thanos Query | `bool` | `true` | no |
-| <a name="input_thanos_query_stores"></a> [thanos\_query\_stores](#input\_thanos\_query\_stores) | List of Thanos stores | `list(any)` | `[]` | no |
-| <a name="input_thanos_queryfrontend"></a> [thanos\_queryfrontend](#input\_thanos\_queryfrontend) | Deploy Thanos Query Frontend | `bool` | `true` | no |
-| <a name="input_thanos_ruler_k8s_service_account_name"></a> [thanos\_ruler\_k8s\_service\_account\_name](#input\_thanos\_ruler\_k8s\_service\_account\_name) | n/a | `string` | `"thanos-ruler"` | no |
-| <a name="input_thanos_s3_access"></a> [thanos\_s3\_access](#input\_thanos\_s3\_access) | AWS accounts with access to Thanos S3 bucket | `list(any)` | `[]` | no |
-| <a name="input_thanos_storeapi_k8s_service_account_name"></a> [thanos\_storeapi\_k8s\_service\_account\_name](#input\_thanos\_storeapi\_k8s\_service\_account\_name) | n/a | `string` | `"kube-prometheus-prometheus"` | no |
-| <a name="input_thanos_storegateway"></a> [thanos\_storegateway](#input\_thanos\_storegateway) | Deploy Thanos Storage gateway | `bool` | `true` | no |
-| <a name="input_thanos_storegateway_k8s_service_account_name"></a> [thanos\_storegateway\_k8s\_service\_account\_name](#input\_thanos\_storegateway\_k8s\_service\_account\_name) | n/a | `string` | `"thanos-storegateway"` | no |
+| <a name="input_thanos_bucketweb_enabled"></a> [thanos\_bucketweb\_enabled](#input\_thanos\_bucketweb\_enabled) | Set to true to enable Thanos Bucket Web component | `bool` | `false` | no |
+| <a name="input_thanos_bucketweb_irsa_additional_policies"></a> [thanos\_bucketweb\_irsa\_additional\_policies](#input\_thanos\_bucketweb\_irsa\_additional\_policies) | Map of the additional policies arns to be attached to default role. Where key is arbiraty id and value is policy arn. | `map(string)` | `{}` | no |
+| <a name="input_thanos_bucketweb_role_arn"></a> [thanos\_bucketweb\_role\_arn](#input\_thanos\_bucketweb\_role\_arn) | Whether to create and use default role or use existing role. Useful for a variety of use cases, such as cross account access. Default (empty string) use default generted role. | `string` | `""` | no |
+| <a name="input_thanos_bucketweb_service_account_name"></a> [thanos\_bucketweb\_service\_account\_name](#input\_thanos\_bucketweb\_service\_account\_name) | Name for Thanos Bucket Web Service Account | `string` | `"thanos-bucketweb"` | no |
+| <a name="input_thanos_compactor_enabled"></a> [thanos\_compactor\_enabled](#input\_thanos\_compactor\_enabled) | Set to true to enable Thanos Compactor component | `bool` | `false` | no |
+| <a name="input_thanos_compactor_irsa_additional_policies"></a> [thanos\_compactor\_irsa\_additional\_policies](#input\_thanos\_compactor\_irsa\_additional\_policies) | Map of the additional policies arns to be attached to default role. Where key is arbiraty id and value is policy arn. | `map(string)` | `{}` | no |
+| <a name="input_thanos_compactor_role_arn"></a> [thanos\_compactor\_role\_arn](#input\_thanos\_compactor\_role\_arn) | Whether to create and use default role or use existing role. Useful for a variety of use cases, such as cross account access. Default (empty string) use default generted role. | `string` | `""` | no |
+| <a name="input_thanos_compactor_service_account_name"></a> [thanos\_compactor\_service\_account\_name](#input\_thanos\_compactor\_service\_account\_name) | Name for Thanos Compactor Service Account | `string` | `"thanos-compactor"` | no |
+| <a name="input_thanos_query_enabled"></a> [thanos\_query\_enabled](#input\_thanos\_query\_enabled) | Set to true to enable Thanos Query component | `bool` | `true` | no |
+| <a name="input_thanos_query_irsa_additional_policies"></a> [thanos\_query\_irsa\_additional\_policies](#input\_thanos\_query\_irsa\_additional\_policies) | Map of the additional policies arns to be attached to default role. Where key is arbiraty id and value is policy arn. | `map(string)` | `{}` | no |
+| <a name="input_thanos_query_role_arn"></a> [thanos\_query\_role\_arn](#input\_thanos\_query\_role\_arn) | Whether to create and use default role or use existing role. Useful for a variety of use cases, such as cross account access. Default (empty string) use default generted role. | `string` | `""` | no |
+| <a name="input_thanos_query_service_account_name"></a> [thanos\_query\_service\_account\_name](#input\_thanos\_query\_service\_account\_name) | Name for Thanos Query Service Account | `string` | `"thanos-query"` | no |
+| <a name="input_thanos_queryfrontend_enabled"></a> [thanos\_queryfrontend\_enabled](#input\_thanos\_queryfrontend\_enabled) | Set to true to enable Thanos Query Frontend component | `bool` | `true` | no |
+| <a name="input_thanos_queryfrontend_irsa_additional_policies"></a> [thanos\_queryfrontend\_irsa\_additional\_policies](#input\_thanos\_queryfrontend\_irsa\_additional\_policies) | Map of the additional policies arns to be attached to default role. Where key is arbiraty id and value is policy arn. | `map(string)` | `{}` | no |
+| <a name="input_thanos_queryfrontend_role_arn"></a> [thanos\_queryfrontend\_role\_arn](#input\_thanos\_queryfrontend\_role\_arn) | Whether to create and use default role or use existing role. Useful for a variety of use cases, such as cross account access. Default (empty string) use default generted role. | `string` | `""` | no |
+| <a name="input_thanos_queryfrontend_service_account_name"></a> [thanos\_queryfrontend\_service\_account\_name](#input\_thanos\_queryfrontend\_service\_account\_name) | Name for Thanos Query Frontend Service Account | `string` | `"thanos-queryfrontend"` | no |
+| <a name="input_thanos_receive_enabled"></a> [thanos\_receive\_enabled](#input\_thanos\_receive\_enabled) | Set to true to enable Thanos Receive component | `bool` | `false` | no |
+| <a name="input_thanos_receive_irsa_additional_policies"></a> [thanos\_receive\_irsa\_additional\_policies](#input\_thanos\_receive\_irsa\_additional\_policies) | Map of the additional policies arns to be attached to default role. Where key is arbiraty id and value is policy arn. | `map(string)` | `{}` | no |
+| <a name="input_thanos_receive_role_arn"></a> [thanos\_receive\_role\_arn](#input\_thanos\_receive\_role\_arn) | Whether to create and use default role or use existing role. Useful for a variety of use cases, such as cross account access. Default (empty string) use default generted role. | `string` | `""` | no |
+| <a name="input_thanos_receive_service_account_name"></a> [thanos\_receive\_service\_account\_name](#input\_thanos\_receive\_service\_account\_name) | Name for Thanos Receive Service Account | `string` | `"thanos-receive"` | no |
+| <a name="input_thanos_receivedistributor_enabled"></a> [thanos\_receivedistributor\_enabled](#input\_thanos\_receivedistributor\_enabled) | Set to true to enable Thanos Receive Distributor component | `bool` | `false` | no |
+| <a name="input_thanos_receivedistributor_irsa_additional_policies"></a> [thanos\_receivedistributor\_irsa\_additional\_policies](#input\_thanos\_receivedistributor\_irsa\_additional\_policies) | Map of the additional policies arns to be attached to default role. Where key is arbiraty id and value is policy arn. | `map(string)` | `{}` | no |
+| <a name="input_thanos_receivedistributor_role_arn"></a> [thanos\_receivedistributor\_role\_arn](#input\_thanos\_receivedistributor\_role\_arn) | Whether to create and use default role or use existing role. Useful for a variety of use cases, such as cross account access. Default (empty string) use default generted role. | `string` | `""` | no |
+| <a name="input_thanos_receivedistributor_service_account_name"></a> [thanos\_receivedistributor\_service\_account\_name](#input\_thanos\_receivedistributor\_service\_account\_name) | Name for Thanos Receive Distributor Service Account | `string` | `"thanos-receivedistributor"` | no |
+| <a name="input_thanos_ruler_enabled"></a> [thanos\_ruler\_enabled](#input\_thanos\_ruler\_enabled) | Set to true to enable Thanos Ruler component | `bool` | `false` | no |
+| <a name="input_thanos_ruler_irsa_additional_policies"></a> [thanos\_ruler\_irsa\_additional\_policies](#input\_thanos\_ruler\_irsa\_additional\_policies) | Map of the additional policies arns to be attached to default role. Where key is arbiraty id and value is policy arn. | `map(string)` | `{}` | no |
+| <a name="input_thanos_ruler_role_arn"></a> [thanos\_ruler\_role\_arn](#input\_thanos\_ruler\_role\_arn) | Whether to create and use default role or use existing role. Useful for a variety of use cases, such as cross account access. Default (empty string) use default generted role. | `string` | `""` | no |
+| <a name="input_thanos_ruler_service_account_name"></a> [thanos\_ruler\_service\_account\_name](#input\_thanos\_ruler\_service\_account\_name) | Name for Thanos Ruler Service Account | `string` | `"thanos-ruler"` | no |
+| <a name="input_thanos_storagegateway_enabled"></a> [thanos\_storagegateway\_enabled](#input\_thanos\_storagegateway\_enabled) | Set to true to enable Thanos Store Gateway component | `bool` | `false` | no |
+| <a name="input_thanos_storagegateway_irsa_additional_policies"></a> [thanos\_storagegateway\_irsa\_additional\_policies](#input\_thanos\_storagegateway\_irsa\_additional\_policies) | Map of the additional policies arns to be attached to default role. Where key is arbiraty id and value is policy arn. | `map(string)` | `{}` | no |
+| <a name="input_thanos_storagegateway_role_arn"></a> [thanos\_storagegateway\_role\_arn](#input\_thanos\_storagegateway\_role\_arn) | Whether to create and use default role or use existing role. Useful for a variety of use cases, such as cross account access. Default (empty string) use default generted role. | `string` | `""` | no |
+| <a name="input_thanos_storagegateway_service_account_name"></a> [thanos\_storagegateway\_service\_account\_name](#input\_thanos\_storagegateway\_service\_account\_name) | Name for Thanos Store Gateway Service Account | `string` | `"thanos-storegateway"` | no |
 | <a name="input_values"></a> [values](#input\_values) | Additional yaml encoded values which will be passed to the Helm chart. | `string` | `""` | no |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
+| <a name="output_helm_release_application_metadata"></a> [helm\_release\_application\_metadata](#output\_helm\_release\_application\_metadata) | Argo application helm release attributes |
+| <a name="output_helm_release_metadata"></a> [helm\_release\_metadata](#output\_helm\_release\_metadata) | Helm release attributes |
+| <a name="output_iam_roles_attributes"></a> [iam\_roles\_attributes](#output\_iam\_roles\_attributes) | Map of the IAM role atributes where key is component name |
+| <a name="output_kubernetes_application_attributes"></a> [kubernetes\_application\_attributes](#output\_kubernetes\_application\_attributes) | Argo kubernetes manifest attributes |
 | <a name="output_test"></a> [test](#output\_test) | n/a |
-| <a name="output_thanos_kms_arn"></a> [thanos\_kms\_arn](#output\_thanos\_kms\_arn) | Thanos KMS ARN |
-| <a name="output_thanos_s3_arn"></a> [thanos\_s3\_arn](#output\_thanos\_s3\_arn) | Thanos S3 bucket ARN |
-| <a name="output_thanos_s3_id"></a> [thanos\_s3\_id](#output\_thanos\_s3\_id) | Thanos S3 bucket id (name) |
-| <a name="output_thanos_s3_region"></a> [thanos\_s3\_region](#output\_thanos\_s3\_region) | Thanos S3 bucket region |
-| <a name="output_thanos_sa_role_arn"></a> [thanos\_sa\_role\_arn](#output\_thanos\_sa\_role\_arn) | Thanos Service Account ARN |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
 ## Contributing and reporting issues

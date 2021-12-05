@@ -1,6 +1,3 @@
-
-# Thanos
-
 variable "enabled" {
   type        = bool
   default     = true
@@ -18,12 +15,6 @@ variable "cluster_identity_oidc_issuer_arn" {
 }
 
 # Helm
-
-variable "helm_create_namespace" {
-  type        = bool
-  default     = true
-  description = "Create the namespace if it does not yet exist"
-}
 
 variable "helm_chart_name" {
   type        = string
@@ -47,6 +38,12 @@ variable "helm_repo_url" {
   type        = string
   default     = "https://charts.bitnami.com/bitnami"
   description = "Helm repository"
+}
+
+variable "helm_create_namespace" {
+  type        = bool
+  default     = true
+  description = "Create the namespace if it does not yet exist"
 }
 
 variable "helm_wait" {
@@ -73,6 +70,20 @@ variable "helm_atomic" {
   description = "If set, installation process purges chart on fail. The wait flag will be set automatically if atomic is used. Defaults to false."
 }
 
+# Values
+
+variable "k8s_namespace" {
+  type        = string
+  default     = "thanos"
+  description = "The K8s namespace in which the ingress-nginx has been created"
+}
+
+variable "k8s_irsa_role_name_prefix" {
+  type        = string
+  default     = "thanos-irsa"
+  description = "The IRSA role name prefix for thanos"
+}
+
 variable "values" {
   type        = string
   default     = ""
@@ -85,72 +96,196 @@ variable "settings" {
   description = "Additional settings which will be passed to the Helm chart values, see https://artifacthub.io/packages/helm/argo/argo-cd"
 }
 
-variable "k8s_namespace" {
+
+variable "thanos_query_enabled" {
+  type        = bool
+  default     = true
+  description = "Set to true to enable Thanos Query component"
+}
+
+variable "thanos_query_service_account_name" {
   type        = string
-  default     = "monitoring"
-  description = "The K8s namespace in which the ingress-nginx has been created"
+  default     = "thanos-query"
+  description = "Name for Thanos Query Service Account"
 }
 
-variable "thanos_query" {
+variable "thanos_query_irsa_additional_policies" {
+  type        = map(string)
+  default     = {}
+  description = "Map of the additional policies arns to be attached to default role. Where key is arbiraty id and value is policy arn."
+}
+
+variable "thanos_query_role_arn" {
+  default     = ""
+  description = "Whether to create and use default role or use existing role. Useful for a variety of use cases, such as cross account access. Default (empty string) use default generted role."
+}
+
+
+variable "thanos_queryfrontend_enabled" {
   type        = bool
   default     = true
-  description = "Deploy Thanos Query"
+  description = "Set to true to enable Thanos Query Frontend component"
 }
 
-variable "thanos_queryfrontend" {
+variable "thanos_queryfrontend_service_account_name" {
+  type        = string
+  default     = "thanos-queryfrontend"
+  description = "Name for Thanos Query Frontend Service Account"
+}
+
+variable "thanos_queryfrontend_irsa_additional_policies" {
+  type        = map(string)
+  default     = {}
+  description = "Map of the additional policies arns to be attached to default role. Where key is arbiraty id and value is policy arn."
+}
+
+variable "thanos_queryfrontend_role_arn" {
+  default     = ""
+  description = "Whether to create and use default role or use existing role. Useful for a variety of use cases, such as cross account access. Default (empty string) use default generted role."
+}
+
+
+variable "thanos_bucketweb_enabled" {
   type        = bool
-  default     = true
-  description = "Deploy Thanos Query Frontend"
+  default     = false
+  description = "Set to true to enable Thanos Bucket Web component"
 }
 
-variable "thanos_storegateway" {
+variable "thanos_bucketweb_service_account_name" {
+  type        = string
+  default     = "thanos-bucketweb"
+  description = "Name for Thanos Bucket Web Service Account"
+}
+
+variable "thanos_bucketweb_irsa_additional_policies" {
+  type        = map(string)
+  default     = {}
+  description = "Map of the additional policies arns to be attached to default role. Where key is arbiraty id and value is policy arn."
+}
+
+variable "thanos_bucketweb_role_arn" {
+  default     = ""
+  description = "Whether to create and use default role or use existing role. Useful for a variety of use cases, such as cross account access. Default (empty string) use default generted role."
+}
+
+
+variable "thanos_compactor_enabled" {
   type        = bool
-  default     = true
-  description = "Deploy Thanos Storage gateway"
+  default     = false
+  description = "Set to true to enable Thanos Compactor component"
 }
 
-variable "thanos_compactor" {
+variable "thanos_compactor_service_account_name" {
+  type        = string
+  default     = "thanos-compactor"
+  description = "Name for Thanos Compactor Service Account"
+}
+
+variable "thanos_compactor_irsa_additional_policies" {
+  type        = map(string)
+  default     = {}
+  description = "Map of the additional policies arns to be attached to default role. Where key is arbiraty id and value is policy arn."
+}
+
+variable "thanos_compactor_role_arn" {
+  default     = ""
+  description = "Whether to create and use default role or use existing role. Useful for a variety of use cases, such as cross account access. Default (empty string) use default generted role."
+}
+
+
+variable "thanos_storagegateway_enabled" {
   type        = bool
-  default     = true
-  description = "Deploy Thanos Compactor"
+  default     = false
+  description = "Set to true to enable Thanos Store Gateway component"
 }
 
-variable "thanos_bucketweb" {
+variable "thanos_storagegateway_service_account_name" {
+  type        = string
+  default     = "thanos-storegateway"
+  description = "Name for Thanos Store Gateway Service Account"
+}
+
+variable "thanos_storagegateway_irsa_additional_policies" {
+  type        = map(string)
+  default     = {}
+  description = "Map of the additional policies arns to be attached to default role. Where key is arbiraty id and value is policy arn."
+}
+
+variable "thanos_storagegateway_role_arn" {
+  default     = ""
+  description = "Whether to create and use default role or use existing role. Useful for a variety of use cases, such as cross account access. Default (empty string) use default generted role."
+}
+
+
+variable "thanos_ruler_enabled" {
   type        = bool
-  default     = true
-  description = "Deploy Thanos Bucket Web"
+  default     = false
+  description = "Set to true to enable Thanos Ruler component"
 }
 
-variable "thanos_query_stores" {
-  type        = list(any)
-  default     = []
-  description = "List of Thanos stores"
+variable "thanos_ruler_service_account_name" {
+  type        = string
+  default     = "thanos-ruler"
+  description = "Name for Thanos Ruler Service Account"
 }
 
-variable "thanos_s3_access" {
-  type        = list(any)
-  default     = []
-  description = "AWS accounts with access to Thanos S3 bucket"
+variable "thanos_ruler_irsa_additional_policies" {
+  type        = map(string)
+  default     = {}
+  description = "Map of the additional policies arns to be attached to default role. Where key is arbiraty id and value is policy arn."
 }
 
-variable "thanos_storegateway_k8s_service_account_name" {
-  default = "thanos-storegateway"
+variable "thanos_ruler_role_arn" {
+  default     = ""
+  description = "Whether to create and use default role or use existing role. Useful for a variety of use cases, such as cross account access. Default (empty string) use default generted role."
 }
 
-variable "thanos_storeapi_k8s_service_account_name" {
-  default = "kube-prometheus-prometheus"
+
+variable "thanos_receive_enabled" {
+  type        = bool
+  default     = false
+  description = "Set to true to enable Thanos Receive component"
 }
 
-variable "thanos_bucketweb_k8s_service_account_name" {
-  default = "thanos-bucketweb"
+variable "thanos_receive_service_account_name" {
+  type        = string
+  default     = "thanos-receive"
+  description = "Name for Thanos Receive Service Account"
 }
 
-variable "thanos_compactor_k8s_service_account_name" {
-  default = "thanos-compactor"
+variable "thanos_receive_irsa_additional_policies" {
+  type        = map(string)
+  default     = {}
+  description = "Map of the additional policies arns to be attached to default role. Where key is arbiraty id and value is policy arn."
 }
 
-variable "thanos_ruler_k8s_service_account_name" {
-  default = "thanos-ruler"
+variable "thanos_receive_role_arn" {
+  default     = ""
+  description = "Whether to create and use default role or use existing role. Useful for a variety of use cases, such as cross account access. Default (empty string) use default generted role."
+}
+
+
+variable "thanos_receivedistributor_enabled" {
+  type        = bool
+  default     = false
+  description = "Set to true to enable Thanos Receive Distributor component"
+}
+
+variable "thanos_receivedistributor_service_account_name" {
+  type        = string
+  default     = "thanos-receivedistributor"
+  description = "Name for Thanos Receive Distributor Service Account"
+}
+
+variable "thanos_receivedistributor_irsa_additional_policies" {
+  type        = map(string)
+  default     = {}
+  description = "Map of the additional policies arns to be attached to default role. Where key is arbiraty id and value is policy arn."
+}
+
+variable "thanos_receivedistributor_role_arn" {
+  default     = ""
+  description = "Whether to create and use default role or use existing role. Useful for a variety of use cases, such as cross account access. Default (empty string) use default generted role."
 }
 
 # ArgoCD
