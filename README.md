@@ -85,10 +85,12 @@ No modules.
 | <a name="input_argo_application_use_helm"></a> [argo\_application\_use\_helm](#input\_argo\_application\_use\_helm) | If set to true, the ArgoCD Application manifest will be deployed using Kubernetes provider as a Helm release. Otherwise it'll be deployed as a Kubernetes manifest. See Readme for more info | `bool` | `false` | no |
 | <a name="input_argo_application_values"></a> [argo\_application\_values](#input\_argo\_application\_values) | Value overrides to use when deploying argo application object with helm | `string` | `""` | no |
 | <a name="input_argo_destionation_server"></a> [argo\_destionation\_server](#input\_argo\_destionation\_server) | Destination server for ArgoCD Application | `string` | `"https://kubernetes.default.svc"` | no |
-| <a name="input_argo_info"></a> [argo\_info](#input\_argo\_info) | ArgoCD info manifest parameter | `list` | <pre>[<br>  {<br>    "name": "terraform",<br>    "value": "true"<br>  }<br>]</pre> | no |
+| <a name="input_argo_info"></a> [argo\_info](#input\_argo\_info) | ArgoCD info manifest parameter | <pre>list(object({<br>    name  = string<br>    value = string<br>  }))</pre> | <pre>[<br>  {<br>    "name": "terraform",<br>    "value": "true"<br>  }<br>]</pre> | no |
+| <a name="input_argo_kubernetes_manifest_field_manager_force_conflicts"></a> [argo\_kubernetes\_manifest\_field\_manager\_force\_conflicts](#input\_argo\_kubernetes\_manifest\_field\_manager\_force\_conflicts) | Forcibly override any field manager conflicts when applying the kubernetes manifest resource | `bool` | `false` | no |
+| <a name="input_argo_kubernetes_manifest_field_manager_name"></a> [argo\_kubernetes\_manifest\_field\_manager\_name](#input\_argo\_kubernetes\_manifest\_field\_manager\_name) | The name of the field manager to use when applying the kubernetes manifest resource. Defaults to Terraform | `string` | `"Terraform"` | no |
 | <a name="input_argo_namespace"></a> [argo\_namespace](#input\_argo\_namespace) | Namespace to deploy ArgoCD application CRD to | `string` | `"argo"` | no |
 | <a name="input_argo_project"></a> [argo\_project](#input\_argo\_project) | ArgoCD Application project | `string` | `"default"` | no |
-| <a name="input_argo_sync_policy"></a> [argo\_sync\_policy](#input\_argo\_sync\_policy) | ArgoCD syncPolicy manifest parameter | `map` | `{}` | no |
+| <a name="input_argo_sync_policy"></a> [argo\_sync\_policy](#input\_argo\_sync\_policy) | ArgoCD syncPolicy manifest parameter | `any` | `{}` | no |
 | <a name="input_enabled"></a> [enabled](#input\_enabled) | Variable indicating whether deployment is enabled | `bool` | `true` | no |
 | <a name="input_helm_atomic"></a> [helm\_atomic](#input\_helm\_atomic) | If set, installation process purges chart on fail. The wait flag will be set automatically if atomic is used. Defaults to false. | `bool` | `false` | no |
 | <a name="input_helm_chart_name"></a> [helm\_chart\_name](#input\_helm\_chart\_name) | Helm chart name to be installed | `string` | `"thanos"` | no |
@@ -130,10 +132,10 @@ No modules.
 | <a name="input_thanos_ruler_irsa_additional_policies"></a> [thanos\_ruler\_irsa\_additional\_policies](#input\_thanos\_ruler\_irsa\_additional\_policies) | Map of the additional policies arns to be attached to default role. Where key is arbiraty id and value is policy arn. | `map(string)` | `{}` | no |
 | <a name="input_thanos_ruler_role_arn"></a> [thanos\_ruler\_role\_arn](#input\_thanos\_ruler\_role\_arn) | Whether to create and use default role or use existing role. Useful for a variety of use cases, such as cross account access. Default (empty string) use default generted role. | `string` | `""` | no |
 | <a name="input_thanos_ruler_service_account_name"></a> [thanos\_ruler\_service\_account\_name](#input\_thanos\_ruler\_service\_account\_name) | Name for Thanos Ruler Service Account | `string` | `"thanos-ruler"` | no |
-| <a name="input_thanos_storagegateway_enabled"></a> [thanos\_storagegateway\_enabled](#input\_thanos\_storagegateway\_enabled) | Set to true to enable Thanos Store Gateway component | `bool` | `false` | no |
-| <a name="input_thanos_storagegateway_irsa_additional_policies"></a> [thanos\_storagegateway\_irsa\_additional\_policies](#input\_thanos\_storagegateway\_irsa\_additional\_policies) | Map of the additional policies arns to be attached to default role. Where key is arbiraty id and value is policy arn. | `map(string)` | `{}` | no |
-| <a name="input_thanos_storagegateway_role_arn"></a> [thanos\_storagegateway\_role\_arn](#input\_thanos\_storagegateway\_role\_arn) | Whether to create and use default role or use existing role. Useful for a variety of use cases, such as cross account access. Default (empty string) use default generted role. | `string` | `""` | no |
-| <a name="input_thanos_storagegateway_service_account_name"></a> [thanos\_storagegateway\_service\_account\_name](#input\_thanos\_storagegateway\_service\_account\_name) | Name for Thanos Store Gateway Service Account | `string` | `"thanos-storegateway"` | no |
+| <a name="input_thanos_storegateway_enabled"></a> [thanos\_storegateway\_enabled](#input\_thanos\_storegateway\_enabled) | Set to true to enable Thanos Store Gateway component | `bool` | `false` | no |
+| <a name="input_thanos_storegateway_irsa_additional_policies"></a> [thanos\_storegateway\_irsa\_additional\_policies](#input\_thanos\_storegateway\_irsa\_additional\_policies) | Map of the additional policies arns to be attached to default role. Where key is arbiraty id and value is policy arn. | `map(string)` | `{}` | no |
+| <a name="input_thanos_storegateway_role_arn"></a> [thanos\_storegateway\_role\_arn](#input\_thanos\_storegateway\_role\_arn) | Whether to create and use default role or use existing role. Useful for a variety of use cases, such as cross account access. Default (empty string) use default generted role. | `string` | `""` | no |
+| <a name="input_thanos_storegateway_service_account_name"></a> [thanos\_storegateway\_service\_account\_name](#input\_thanos\_storegateway\_service\_account\_name) | Name for Thanos Store Gateway Service Account | `string` | `"thanos-storegateway"` | no |
 | <a name="input_values"></a> [values](#input\_values) | Additional yaml encoded values which will be passed to the Helm chart. | `string` | `""` | no |
 
 ## Outputs
@@ -144,7 +146,6 @@ No modules.
 | <a name="output_helm_release_metadata"></a> [helm\_release\_metadata](#output\_helm\_release\_metadata) | Helm release attributes |
 | <a name="output_iam_roles_attributes"></a> [iam\_roles\_attributes](#output\_iam\_roles\_attributes) | Map of the IAM role atributes where key is component name |
 | <a name="output_kubernetes_application_attributes"></a> [kubernetes\_application\_attributes](#output\_kubernetes\_application\_attributes) | Argo kubernetes manifest attributes |
-| <a name="output_test"></a> [test](#output\_test) | n/a |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
 ## Contributing and reporting issues

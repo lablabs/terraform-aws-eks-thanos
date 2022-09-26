@@ -116,6 +116,7 @@ variable "thanos_query_irsa_additional_policies" {
 }
 
 variable "thanos_query_role_arn" {
+  type        = string
   default     = ""
   description = "Whether to create and use default role or use existing role. Useful for a variety of use cases, such as cross account access. Default (empty string) use default generted role."
 }
@@ -140,6 +141,7 @@ variable "thanos_queryfrontend_irsa_additional_policies" {
 }
 
 variable "thanos_queryfrontend_role_arn" {
+  type        = string
   default     = ""
   description = "Whether to create and use default role or use existing role. Useful for a variety of use cases, such as cross account access. Default (empty string) use default generted role."
 }
@@ -164,6 +166,7 @@ variable "thanos_bucketweb_irsa_additional_policies" {
 }
 
 variable "thanos_bucketweb_role_arn" {
+  type        = string
   default     = ""
   description = "Whether to create and use default role or use existing role. Useful for a variety of use cases, such as cross account access. Default (empty string) use default generted role."
 }
@@ -188,6 +191,7 @@ variable "thanos_compactor_irsa_additional_policies" {
 }
 
 variable "thanos_compactor_role_arn" {
+  type        = string
   default     = ""
   description = "Whether to create and use default role or use existing role. Useful for a variety of use cases, such as cross account access. Default (empty string) use default generted role."
 }
@@ -212,6 +216,7 @@ variable "thanos_storegateway_irsa_additional_policies" {
 }
 
 variable "thanos_storegateway_role_arn" {
+  type        = string
   default     = ""
   description = "Whether to create and use default role or use existing role. Useful for a variety of use cases, such as cross account access. Default (empty string) use default generted role."
 }
@@ -236,6 +241,7 @@ variable "thanos_ruler_irsa_additional_policies" {
 }
 
 variable "thanos_ruler_role_arn" {
+  type        = string
   default     = ""
   description = "Whether to create and use default role or use existing role. Useful for a variety of use cases, such as cross account access. Default (empty string) use default generted role."
 }
@@ -260,6 +266,7 @@ variable "thanos_receive_irsa_additional_policies" {
 }
 
 variable "thanos_receive_role_arn" {
+  type        = string
   default     = ""
   description = "Whether to create and use default role or use existing role. Useful for a variety of use cases, such as cross account access. Default (empty string) use default generted role."
 }
@@ -284,6 +291,7 @@ variable "thanos_receivedistributor_irsa_additional_policies" {
 }
 
 variable "thanos_receivedistributor_role_arn" {
+  type        = string
   default     = ""
   description = "Whether to create and use default role or use existing role. Useful for a variety of use cases, such as cross account access. Default (empty string) use default generted role."
 }
@@ -309,6 +317,7 @@ variable "argo_application_use_helm" {
 }
 
 variable "argo_application_values" {
+  type        = string
   default     = ""
   description = "Value overrides to use when deploying argo application object with helm"
 }
@@ -326,6 +335,10 @@ variable "argo_project" {
 }
 
 variable "argo_info" {
+  type = list(object({
+    name  = string
+    value = string
+  }))
   default = [{
     "name"  = "terraform"
     "value" = "true"
@@ -334,6 +347,19 @@ variable "argo_info" {
 }
 
 variable "argo_sync_policy" {
+  type        = any
   description = "ArgoCD syncPolicy manifest parameter"
   default     = {}
+}
+
+variable "argo_kubernetes_manifest_field_manager_name" {
+  type        = string
+  default     = "Terraform"
+  description = "The name of the field manager to use when applying the kubernetes manifest resource. Defaults to Terraform"
+}
+
+variable "argo_kubernetes_manifest_field_manager_force_conflicts" {
+  type        = bool
+  default     = false
+  description = "Forcibly override any field manager conflicts when applying the kubernetes manifest resource"
 }
