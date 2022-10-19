@@ -1,5 +1,5 @@
 locals {
-  values = yamlencode({
+  values_default = yamlencode({
     query : {
       enabled : var.thanos_query_enabled
       serviceAccount : {
@@ -70,7 +70,7 @@ locals {
 data "utils_deep_merge_yaml" "values" {
   count = var.enabled ? 1 : 0
   input = compact([
-    local.values,
+    local.values_default,
     var.values
   ])
 }
