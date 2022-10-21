@@ -1,4 +1,12 @@
-module "addon_installation_disabled" {
+locals {
+  values = yamlencode({
+    "serviceAccount" : {
+      "create" : true
+    }
+  })
+}
+
+module "thanos_disabled" {
   source = "../../"
 
   enabled = false
@@ -7,7 +15,7 @@ module "addon_installation_disabled" {
   cluster_identity_oidc_issuer_arn = module.eks_cluster.eks_cluster_identity_oidc_issuer_arn
 }
 
-module "addon_installation_helm" {
+module "thanos_helm" {
   source = "../../"
 
   enabled           = true
@@ -17,12 +25,11 @@ module "addon_installation_helm" {
   cluster_identity_oidc_issuer     = module.eks_cluster.eks_cluster_identity_oidc_issuer
   cluster_identity_oidc_issuer_arn = module.eks_cluster.eks_cluster_identity_oidc_issuer_arn
 
-  values = yamlencode({
-    # insert sample values here
-  })
+  values = local.values
 }
 
-module "addon_installation_argo_kubernetes" {
+# Please, see README.md and Argo Kubernetes deployment method for implications of using Kubernetes installation method
+module "thanos_argo_kubernetes" {
   source = "../../"
 
   enabled           = true
@@ -32,9 +39,7 @@ module "addon_installation_argo_kubernetes" {
   cluster_identity_oidc_issuer     = module.eks_cluster.eks_cluster_identity_oidc_issuer
   cluster_identity_oidc_issuer_arn = module.eks_cluster.eks_cluster_identity_oidc_issuer_arn
 
-  values = yamlencode({
-    # insert sample values here
-  })
+  values = local.values
 
   argo_sync_policy = {
     "automated" : {}
@@ -43,7 +48,7 @@ module "addon_installation_argo_kubernetes" {
 }
 
 
-module "addon_installation_argo_helm" {
+module "thanos_argo_helm" {
   source = "../../"
 
   enabled           = true
@@ -52,6 +57,8 @@ module "addon_installation_argo_helm" {
 
   cluster_identity_oidc_issuer     = module.eks_cluster.eks_cluster_identity_oidc_issuer
   cluster_identity_oidc_issuer_arn = module.eks_cluster.eks_cluster_identity_oidc_issuer_arn
+
+  values = local.values
 
   argo_sync_policy = {
     "automated" : {}
