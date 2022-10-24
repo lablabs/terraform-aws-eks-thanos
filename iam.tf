@@ -70,13 +70,6 @@ locals {
   }
 }
 
-resource "aws_iam_role_policy_attachment" "this" {
-  for_each = local.additional_policies_map
-
-  role       = aws_iam_role.this[each.value.component].name
-  policy_arn = each.value.policy_arn
-}
-
 data "aws_iam_policy_document" "this_irsa" {
   for_each = {
     for component, value in local.irsa_role_map :
@@ -97,7 +90,7 @@ data "aws_iam_policy_document" "this_irsa" {
       test     = "StringEquals"
       variable = "${replace(var.cluster_identity_oidc_issuer, "https://", "")}:sub"
       values = [
-        "system:serviceaccount:${var.k8s_namespace}:${each.value.service_account}",
+        "system:serviceaccount:${var.namespace}:${each.value.service_account}",
       ]
     }
   }
@@ -110,6 +103,14 @@ resource "aws_iam_role" "this" {
     if value.enabled && value.role_arn == ""
   }
 
-  name               = "${var.k8s_irsa_role_name_prefix}-${var.helm_chart_name}-${each.key}"
+  name               = "${var.irsa_role_name_prefix}-${var.helm_chart_name}-${each.key}"
   assume_role_policy = data.aws_iam_policy_document.this_irsa[each.key].json
+  tags               = var.irsa_tags
+}
+
+resource "aws_iam_role_policy_attachment" "this" {
+  for_each = local.additional_policies_map
+
+  role       = aws_iam_role.this[each.value.component].name
+  policy_arn = each.value.policy_arn
 }
