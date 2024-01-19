@@ -8,9 +8,9 @@ The code in this example shows how to use the module with basic configuration an
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 4.19.0 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 4.35.0 |
 | <a name="requirement_helm"></a> [helm](#requirement\_helm) | >= 2.6.0 |
-| <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | >= 2.11.0 |
+| <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | >= 2.20.0 |
 
 ## Modules
 
@@ -22,7 +22,7 @@ The code in this example shows how to use the module with basic configuration an
 | <a name="module_thanos_argo_kubernetes"></a> [thanos\_argo\_kubernetes](#module\_thanos\_argo\_kubernetes) | ../../ | n/a |
 | <a name="module_thanos_disabled"></a> [thanos\_disabled](#module\_thanos\_disabled) | ../../ | n/a |
 | <a name="module_thanos_helm"></a> [thanos\_helm](#module\_thanos\_helm) | ../../ | n/a |
-| <a name="module_vpc"></a> [vpc](#module\_vpc) | terraform-aws-modules/vpc/aws | 3.14.2 |
+| <a name="module_vpc"></a> [vpc](#module\_vpc) | terraform-aws-modules/vpc/aws | 4.0.0 |
 
 ## Resources
 
