@@ -1,16 +1,16 @@
 moved {
   from = aws_iam_role.this
-  to   = module.addon-irsa["tempo"].aws_iam_role.this
+  to   = module.addon-irsa["thanos"].aws_iam_role.this
 }
 
 moved {
   from = aws_iam_policy.this
-  to   = module.addon-irsa["tempo"].aws_iam_policy.this
+  to   = module.addon-irsa["thanos"].aws_iam_policy.this
 }
 
 moved {
-  from = aws_iam_role_policy_attachment.this_additional
-  to   = module.addon-irsa["tempo"].aws_iam_role_policy_attachment.this_additional
+  from = aws_iam_role_policy_attachment.this
+  to   = module.addon-irsa["thanos"].aws_iam_role_policy_attachment.this_additional
 }
 
 moved {
