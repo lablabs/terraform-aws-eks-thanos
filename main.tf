@@ -17,106 +17,106 @@ locals {
 
   addon_irsa = {
     query = {
-      service_account_create = var.thanos_query_service_account_create
-      service_account_name   = var.thanos_query_service_account_name
+      service_account_create = var.query_service_account_create
+      service_account_name   = var.query_service_account_name
 
-      irsa_role_create          = var.thanos_query_irsa_role_create
-      irsa_policy_enabled       = var.thanos_query_irsa_policy_enabled
-      irsa_policy               = var.thanos_query_irsa_policy
-      irsa_assume_role_enabled  = var.thanos_query_irsa_assume_role_enabled
-      irsa_assume_role_arns     = var.thanos_query_irsa_assume_role_arns
-      irsa_permissions_boundary = var.thanos_query_irsa_permissions_boundary
-      irsa_additional_policies  = var.thanos_query_irsa_additional_policies
+      irsa_role_create          = var.query_irsa_role_create
+      irsa_policy_enabled       = var.query_irsa_policy_enabled
+      irsa_policy               = var.query_irsa_policy
+      irsa_assume_role_enabled  = var.query_irsa_assume_role_enabled
+      irsa_assume_role_arns     = var.query_irsa_assume_role_arns
+      irsa_permissions_boundary = var.query_irsa_permissions_boundary
+      irsa_additional_policies  = var.query_irsa_additional_policies
     }
     queryfrontend = {
-      service_account_create = var.thanos_queryfrontend_service_account_create
-      service_account_name   = var.thanos_queryfrontend_service_account_name
+      service_account_create = var.queryfrontend_service_account_create
+      service_account_name   = var.queryfrontend_service_account_name
 
-      irsa_role_create          = var.thanos_queryfrontend_irsa_role_create
-      irsa_policy_enabled       = var.thanos_queryfrontend_irsa_policy_enabled
-      irsa_policy               = var.thanos_queryfrontend_irsa_policy
-      irsa_assume_role_enabled  = var.thanos_queryfrontend_irsa_assume_role_enabled
-      irsa_assume_role_arns     = var.thanos_queryfrontend_irsa_assume_role_arns
-      irsa_permissions_boundary = var.thanos_queryfrontend_irsa_permissions_boundary
-      irsa_additional_policies  = var.thanos_queryfrontend_irsa_additional_policies
+      irsa_role_create          = var.queryfrontend_irsa_role_create
+      irsa_policy_enabled       = var.queryfrontend_irsa_policy_enabled
+      irsa_policy               = var.queryfrontend_irsa_policy
+      irsa_assume_role_enabled  = var.queryfrontend_irsa_assume_role_enabled
+      irsa_assume_role_arns     = var.queryfrontend_irsa_assume_role_arns
+      irsa_permissions_boundary = var.queryfrontend_irsa_permissions_boundary
+      irsa_additional_policies  = var.queryfrontend_irsa_additional_policies
     }
     bucketweb = {
-      service_account_create = var.thanos_bucketweb_service_account_create
-      service_account_name   = var.thanos_bucketweb_service_account_name
+      service_account_create = var.bucketweb_service_account_create
+      service_account_name   = var.bucketweb_service_account_name
 
-      irsa_role_create          = var.thanos_bucketweb_irsa_role_create
-      irsa_policy_enabled       = var.thanos_bucketweb_irsa_policy_enabled
-      irsa_policy               = var.thanos_bucketweb_irsa_policy
-      irsa_assume_role_enabled  = var.thanos_bucketweb_irsa_assume_role_enabled
-      irsa_assume_role_arns     = var.thanos_bucketweb_irsa_assume_role_arns
-      irsa_permissions_boundary = var.thanos_bucketweb_irsa_permissions_boundary
-      irsa_additional_policies  = var.thanos_bucketweb_irsa_additional_policies
+      irsa_role_create          = var.bucketweb_irsa_role_create
+      irsa_policy_enabled       = var.bucketweb_irsa_policy_enabled
+      irsa_policy               = var.bucketweb_irsa_policy
+      irsa_assume_role_enabled  = var.bucketweb_irsa_assume_role_enabled
+      irsa_assume_role_arns     = var.bucketweb_irsa_assume_role_arns
+      irsa_permissions_boundary = var.bucketweb_irsa_permissions_boundary
+      irsa_additional_policies  = var.bucketweb_irsa_additional_policies
     }
     compactor = {
-      service_account_create = var.thanos_compactor_service_account_create
-      service_account_name   = var.thanos_compactor_service_account_name
+      service_account_create = var.compactor_service_account_create
+      service_account_name   = var.compactor_service_account_name
 
-      irsa_role_create          = var.thanos_compactor_irsa_role_create
-      irsa_policy_enabled       = var.thanos_compactor_irsa_policy_enabled
-      irsa_policy               = var.thanos_compactor_irsa_policy
-      irsa_assume_role_enabled  = var.thanos_compactor_irsa_assume_role_enabled
-      irsa_assume_role_arns     = var.thanos_compactor_irsa_assume_role_arns
-      irsa_permissions_boundary = var.thanos_compactor_irsa_permissions_boundary
-      irsa_additional_policies  = var.thanos_compactor_irsa_additional_policies
+      irsa_role_create          = var.compactor_irsa_role_create
+      irsa_policy_enabled       = var.compactor_irsa_policy_enabled
+      irsa_policy               = var.compactor_irsa_policy
+      irsa_assume_role_enabled  = var.compactor_irsa_assume_role_enabled
+      irsa_assume_role_arns     = var.compactor_irsa_assume_role_arns
+      irsa_permissions_boundary = var.compactor_irsa_permissions_boundary
+      irsa_additional_policies  = var.compactor_irsa_additional_policies
     }
     storegateway = {
-      service_account_create = var.thanos_storegateway_service_account_create
-      service_account_name   = var.thanos_storegateway_service_account_name
+      service_account_create = var.storegateway_service_account_create
+      service_account_name   = var.storegateway_service_account_name
 
-      irsa_role_create          = var.thanos_storegateway_irsa_role_create
-      irsa_policy_enabled       = var.thanos_storegateway_irsa_policy_enabled
-      irsa_policy               = var.thanos_storegateway_irsa_policy
-      irsa_assume_role_enabled  = var.thanos_storegateway_irsa_assume_role_enabled
-      irsa_assume_role_arns     = var.thanos_storegateway_irsa_assume_role_arns
-      irsa_permissions_boundary = var.thanos_storegateway_irsa_permissions_boundary
-      irsa_additional_policies  = var.thanos_storegateway_irsa_additional_policies
+      irsa_role_create          = var.storegateway_irsa_role_create
+      irsa_policy_enabled       = var.storegateway_irsa_policy_enabled
+      irsa_policy               = var.storegateway_irsa_policy
+      irsa_assume_role_enabled  = var.storegateway_irsa_assume_role_enabled
+      irsa_assume_role_arns     = var.storegateway_irsa_assume_role_arns
+      irsa_permissions_boundary = var.storegateway_irsa_permissions_boundary
+      irsa_additional_policies  = var.storegateway_irsa_additional_policies
     }
     ruler = {
-      service_account_create = var.thanos_ruler_service_account_create
-      service_account_name   = var.thanos_ruler_service_account_name
+      service_account_create = var.ruler_service_account_create
+      service_account_name   = var.ruler_service_account_name
 
-      irsa_role_create          = var.thanos_ruler_irsa_role_create
-      irsa_policy_enabled       = var.thanos_ruler_irsa_policy_enabled
-      irsa_policy               = var.thanos_ruler_irsa_policy
-      irsa_assume_role_enabled  = var.thanos_ruler_irsa_assume_role_enabled
-      irsa_assume_role_arns     = var.thanos_ruler_irsa_assume_role_arns
-      irsa_permissions_boundary = var.thanos_ruler_irsa_permissions_boundary
-      irsa_additional_policies  = var.thanos_ruler_irsa_additional_policies
+      irsa_role_create          = var.ruler_irsa_role_create
+      irsa_policy_enabled       = var.ruler_irsa_policy_enabled
+      irsa_policy               = var.ruler_irsa_policy
+      irsa_assume_role_enabled  = var.ruler_irsa_assume_role_enabled
+      irsa_assume_role_arns     = var.ruler_irsa_assume_role_arns
+      irsa_permissions_boundary = var.ruler_irsa_permissions_boundary
+      irsa_additional_policies  = var.ruler_irsa_additional_policies
     }
     receive = {
-      service_account_create = var.thanos_receive_service_account_create
-      service_account_name   = var.thanos_receive_service_account_name
+      service_account_create = var.receive_service_account_create
+      service_account_name   = var.receive_service_account_name
 
-      irsa_role_create          = var.thanos_receive_irsa_role_create
-      irsa_policy_enabled       = var.thanos_receive_irsa_policy_enabled
-      irsa_policy               = var.thanos_receive_irsa_policy
-      irsa_assume_role_enabled  = var.thanos_receive_irsa_assume_role_enabled
-      irsa_assume_role_arns     = var.thanos_receive_irsa_assume_role_arns
-      irsa_permissions_boundary = var.thanos_receive_irsa_permissions_boundary
-      irsa_additional_policies  = var.thanos_receive_irsa_additional_policies
+      irsa_role_create          = var.receive_irsa_role_create
+      irsa_policy_enabled       = var.receive_irsa_policy_enabled
+      irsa_policy               = var.receive_irsa_policy
+      irsa_assume_role_enabled  = var.receive_irsa_assume_role_enabled
+      irsa_assume_role_arns     = var.receive_irsa_assume_role_arns
+      irsa_permissions_boundary = var.receive_irsa_permissions_boundary
+      irsa_additional_policies  = var.receive_irsa_additional_policies
     }
     receivedistributor = {
-      service_account_create = var.thanos_receivedistributor_service_account_create
-      service_account_name   = var.thanos_receivedistributor_service_account_name
+      service_account_create = var.receivedistributor_service_account_create
+      service_account_name   = var.receivedistributor_service_account_name
 
-      irsa_role_create          = var.thanos_receivedistributor_irsa_role_create
-      irsa_policy_enabled       = var.thanos_receivedistributor_irsa_policy_enabled
-      irsa_policy               = var.thanos_receivedistributor_irsa_policy
-      irsa_assume_role_enabled  = var.thanos_receivedistributor_irsa_assume_role_enabled
-      irsa_assume_role_arns     = var.thanos_receivedistributor_irsa_assume_role_arns
-      irsa_permissions_boundary = var.thanos_receivedistributor_irsa_permissions_boundary
-      irsa_additional_policies  = var.thanos_receivedistributor_irsa_additional_policies
+      irsa_role_create          = var.receivedistributor_irsa_role_create
+      irsa_policy_enabled       = var.receivedistributor_irsa_policy_enabled
+      irsa_policy               = var.receivedistributor_irsa_policy
+      irsa_assume_role_enabled  = var.receivedistributor_irsa_assume_role_enabled
+      irsa_assume_role_arns     = var.receivedistributor_irsa_assume_role_arns
+      irsa_permissions_boundary = var.receivedistributor_irsa_permissions_boundary
+      irsa_additional_policies  = var.receivedistributor_irsa_additional_policies
     }
   }
 
   addon_values = yamlencode({
     query = {
-      enabled = var.thanos_query_enabled
+      enabled = var.query_enabled
       rbac = {
         create = module.addon-irsa["query"].rbac_create
       }
@@ -131,7 +131,7 @@ locals {
     }
 
     queryFrontend = {
-      enabled = var.thanos_queryfrontend_enabled
+      enabled = var.queryfrontend_enabled
       rbac = {
         create = module.addon-irsa["queryfrontend"].rbac_create
       }
@@ -146,7 +146,7 @@ locals {
     }
 
     buckeweb = {
-      enabled = var.thanos_bucketweb_enabled
+      enabled = var.bucketweb_enabled
       serviceAccount = {
         create = module.addon-irsa["bucketweb"].service_account_create
         name   = module.addon-irsa["bucketweb"].service_account_name
@@ -157,7 +157,7 @@ locals {
     }
 
     compactor = {
-      enabled = var.thanos_compactor_enabled
+      enabled = var.compactor_enabled
       serviceAccount = {
         create = module.addon-irsa["compactor"].service_account_create
         name   = module.addon-irsa["compactor"].service_account_name
@@ -168,7 +168,7 @@ locals {
     }
 
     storegateway = {
-      enabled = var.thanos_storegateway_enabled
+      enabled = var.storegateway_enabled
       serviceAccount = {
         create = module.addon-irsa["storegateway"].service_account_create
         name   = module.addon-irsa["storegateway"].service_account_name
@@ -179,7 +179,7 @@ locals {
     }
 
     ruler = {
-      enabled = var.thanos_ruler_enabled
+      enabled = var.ruler_enabled
       serviceAccount = {
         create = module.addon-irsa["ruler"].service_account_create
         name   = module.addon-irsa["ruler"].service_account_name
@@ -190,7 +190,7 @@ locals {
     }
 
     receive = {
-      enabled = var.thanos_receive_enabled
+      enabled = var.receive_enabled
       serviceAccount = {
         create = module.addon-irsa["receive"].service_account_create
         name   = module.addon-irsa["receive"].service_account_name
@@ -201,7 +201,7 @@ locals {
     }
 
     receiveDistributor = {
-      enabled = var.thanos_receivedistributor_enabled
+      enabled = var.receivedistributor_enabled
       serviceAccount = {
         create = module.addon-irsa["receivedistributor"].service_account_create
         name   = module.addon-irsa["receivedistributor"].service_account_name
