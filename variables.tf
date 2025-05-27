@@ -1,81 +1,9 @@
+# IMPORTANT: Add addon specific variables here
 variable "enabled" {
   type        = bool
   default     = true
-  description = "Variable indicating whether deployment is enabled"
+  description = "Set to false to prevent the module from creating any resources."
 }
-
-variable "cluster_identity_oidc_issuer" {
-  type        = string
-  description = "The OIDC Identity issuer for the cluster"
-}
-
-variable "cluster_identity_oidc_issuer_arn" {
-  type        = string
-  description = "The OIDC Identity issuer ARN for the cluster that can be used to associate IAM roles with a service account"
-}
-
-# Helm
-
-variable "helm_chart_name" {
-  type        = string
-  default     = "thanos"
-  description = "Helm chart name to be installed"
-}
-
-variable "helm_chart_version" {
-  type        = string
-  default     = "6.0.13"
-  description = "Version of the Helm chart"
-}
-
-variable "helm_release_name" {
-  type        = string
-  default     = "thanos"
-  description = "Helm release name"
-}
-
-variable "helm_repo_url" {
-  type        = string
-  default     = "https://charts.bitnami.com/bitnami"
-  description = "Helm repository"
-}
-
-variable "helm_create_namespace" {
-  type        = bool
-  default     = true
-  description = "Create the namespace if it does not yet exist"
-}
-
-variable "namespace" {
-  type        = string
-  default     = "thanos"
-  description = "The K8s namespace in which the ingress-nginx has been created"
-}
-
-variable "settings" {
-  type        = map(any)
-  default     = {}
-  description = "Additional settings which will be passed to the Helm chart values, see https://artifacthub.io/packages/helm/argo/argo-cd"
-}
-
-variable "values" {
-  type        = string
-  default     = ""
-  description = "Additional yaml encoded values which will be passed to the Helm chart."
-}
-
-variable "irsa_role_name_prefix" {
-  type        = string
-  default     = "thanos-irsa"
-  description = "The IRSA role name prefix for thanos"
-}
-
-variable "irsa_tags" {
-  type        = map(string)
-  default     = {}
-  description = "IRSA resources tags"
-}
-
 
 variable "thanos_query_enabled" {
   type        = bool
@@ -83,24 +11,59 @@ variable "thanos_query_enabled" {
   description = "Set to true to enable Thanos Query component"
 }
 
+variable "thanos_query_service_account_create" {
+  type        = bool
+  default     = true
+  description = "Whether to create the Service Account for the Thanos query."
+}
+
 variable "thanos_query_service_account_name" {
   type        = string
   default     = "thanos-query"
-  description = "Name for Thanos Query Service Account"
+  description = "The name of the Service Account for the Thanos query."
+}
+
+variable "thanos_query_irsa_role_create" {
+  type        = bool
+  default     = false
+  description = "Whether to create the IRSA role for the Thanos query."
+}
+
+variable "thanos_query_irsa_policy_enabled" {
+  type        = bool
+  default     = false
+  description = "Whether to create IAM policy specified by `thanos_query_irsa_policy` for the Thanos query. Mutually exclusive with `thanos_query_irsa_assume_role_enabled`."
+}
+
+variable "thanos_query_irsa_policy" {
+  type        = string
+  default     = ""
+  description = "Policy to be attached to the default role of the Thanos query. Applied only if `thanos_query_irsa_policy_enabled` is `true`."
+}
+
+variable "thanos_query_irsa_assume_role_enabled" {
+  type        = bool
+  default     = false
+  description = "Whether IRSA for the Thanos query is allowed to assume role defined by `thanos_query_irsa_assume_role_arn`. Mutually exclusive with `thanos_query_irsa_policy_enabled`."
+}
+
+variable "thanos_query_irsa_assume_role_arns" {
+  type        = list(string)
+  default     = []
+  description = "Assume role ARNs for the Thanos query. Applied only if `thanos_query_irsa_assume_role_enabled` is `true`."
+}
+
+variable "thanos_query_irsa_permissions_boundary" {
+  type        = string
+  default     = null
+  description = "ARN of the policy that is used to set the permissions boundary for the IRSA role of the Thanos query. Defaults to `\"\"`."
 }
 
 variable "thanos_query_irsa_additional_policies" {
   type        = map(string)
   default     = {}
-  description = "Map of the additional policies arns to be attached to default role. Where key is arbiraty id and value is policy arn."
+  description = "Map of the additional policies to be attached to default role of the Thanos query. Where key is arbitrary id and value is policy ARN."
 }
-
-variable "thanos_query_role_arn" {
-  type        = string
-  default     = ""
-  description = "Whether to create and use default role or use existing role. Useful for a variety of use cases, such as cross account access. Default (empty string) use default generted role."
-}
-
 
 variable "thanos_queryfrontend_enabled" {
   type        = bool
@@ -108,24 +71,59 @@ variable "thanos_queryfrontend_enabled" {
   description = "Set to true to enable Thanos Query Frontend component"
 }
 
+variable "thanos_queryfrontend_service_account_create" {
+  type        = bool
+  default     = true
+  description = "Whether to create the Service Account for the Thanos Query Frontend."
+}
+
 variable "thanos_queryfrontend_service_account_name" {
   type        = string
   default     = "thanos-queryfrontend"
-  description = "Name for Thanos Query Frontend Service Account"
+  description = "The name of the Service Account for the Thanos Query Frontend."
+}
+
+variable "thanos_queryfrontend_irsa_role_create" {
+  type        = bool
+  default     = false
+  description = "Whether to create the IRSA role for the Thanos Query Frontend."
+}
+
+variable "thanos_queryfrontend_irsa_policy_enabled" {
+  type        = bool
+  default     = false
+  description = "Whether to create IAM policy specified by `thanos_queryfrontend_irsa_policy` for the Thanos Query Frontend. Mutually exclusive with `thanos_queryfrontend_irsa_assume_role_enabled`."
+}
+
+variable "thanos_queryfrontend_irsa_policy" {
+  type        = string
+  default     = ""
+  description = "Policy to be attached to the default role of the Thanos Query Frontend. Applied only if `thanos_queryfrontend_irsa_policy_enabled` is `true`."
+}
+
+variable "thanos_queryfrontend_irsa_assume_role_enabled" {
+  type        = bool
+  default     = false
+  description = "Whether IRSA for the Thanos Query Frontend is allowed to assume role defined by `thanos_queryfrontend_irsa_assume_role_arn`. Mutually exclusive with `thanos_queryfrontend_irsa_policy_enabled`."
+}
+
+variable "thanos_queryfrontend_irsa_assume_role_arns" {
+  type        = list(string)
+  default     = []
+  description = "Assume role ARNs for the Thanos Query Frontend. Applied only if `thanos_queryfrontend_irsa_assume_role_enabled` is `true`."
+}
+
+variable "thanos_queryfrontend_irsa_permissions_boundary" {
+  type        = string
+  default     = null
+  description = "ARN of the policy that is used to set the permissions boundary for the IRSA role of the Thanos Query Frontend. Defaults to `\"\"`."
 }
 
 variable "thanos_queryfrontend_irsa_additional_policies" {
   type        = map(string)
   default     = {}
-  description = "Map of the additional policies arns to be attached to default role. Where key is arbiraty id and value is policy arn."
+  description = "Map of the additional policies to be attached to default role of the Thanos Query Frontend. Where key is arbitrary id and value is policy ARN."
 }
-
-variable "thanos_queryfrontend_role_arn" {
-  type        = string
-  default     = ""
-  description = "Whether to create and use default role or use existing role. Useful for a variety of use cases, such as cross account access. Default (empty string) use default generted role."
-}
-
 
 variable "thanos_bucketweb_enabled" {
   type        = bool
@@ -133,24 +131,59 @@ variable "thanos_bucketweb_enabled" {
   description = "Set to true to enable Thanos Bucket Web component"
 }
 
+variable "thanos_bucketweb_service_account_create" {
+  type        = bool
+  default     = true
+  description = "Whether to create the Service Account for the Thanos Bucket Web."
+}
+
 variable "thanos_bucketweb_service_account_name" {
   type        = string
   default     = "thanos-bucketweb"
-  description = "Name for Thanos Bucket Web Service Account"
+  description = "The name of the Service Account for the Thanos Bucket Web."
+}
+
+variable "thanos_bucketweb_irsa_role_create" {
+  type        = bool
+  default     = false
+  description = "Whether to create the IRSA role for the Thanos Bucket Web."
+}
+
+variable "thanos_bucketweb_irsa_policy_enabled" {
+  type        = bool
+  default     = false
+  description = "Whether to create IAM policy specified by `thanos_bucketweb_irsa_policy` for the Thanos Bucket Web. Mutually exclusive with `thanos_bucketweb_irsa_assume_role_enabled`."
+}
+
+variable "thanos_bucketweb_irsa_policy" {
+  type        = string
+  default     = ""
+  description = "Policy to be attached to the default role of the Thanos Bucket Web. Applied only if `thanos_bucketweb_irsa_policy_enabled` is `true`."
+}
+
+variable "thanos_bucketweb_irsa_assume_role_enabled" {
+  type        = bool
+  default     = false
+  description = "Whether IRSA for the Thanos Bucket Web is allowed to assume role defined by `thanos_bucketweb_irsa_assume_role_arn`. Mutually exclusive with `thanos_bucketweb_irsa_policy_enabled`."
+}
+
+variable "thanos_bucketweb_irsa_assume_role_arns" {
+  type        = list(string)
+  default     = []
+  description = "Assume role ARNs for the Thanos Bucket Web. Applied only if `thanos_bucketweb_irsa_assume_role_enabled` is `true`."
+}
+
+variable "thanos_bucketweb_irsa_permissions_boundary" {
+  type        = string
+  default     = null
+  description = "ARN of the policy that is used to set the permissions boundary for the IRSA role of the Thanos Bucket Web. Defaults to `\"\"`."
 }
 
 variable "thanos_bucketweb_irsa_additional_policies" {
   type        = map(string)
   default     = {}
-  description = "Map of the additional policies arns to be attached to default role. Where key is arbiraty id and value is policy arn."
+  description = "Map of the additional policies to be attached to default role of the Thanos Bucket Web. Where key is arbitrary id and value is policy ARN."
 }
-
-variable "thanos_bucketweb_role_arn" {
-  type        = string
-  default     = ""
-  description = "Whether to create and use default role or use existing role. Useful for a variety of use cases, such as cross account access. Default (empty string) use default generted role."
-}
-
 
 variable "thanos_compactor_enabled" {
   type        = bool
@@ -158,24 +191,59 @@ variable "thanos_compactor_enabled" {
   description = "Set to true to enable Thanos Compactor component"
 }
 
+variable "thanos_compactor_service_account_create" {
+  type        = bool
+  default     = true
+  description = "Whether to create the Service Account for the Thanos Compactor."
+}
+
 variable "thanos_compactor_service_account_name" {
   type        = string
   default     = "thanos-compactor"
-  description = "Name for Thanos Compactor Service Account"
+  description = "The name of the Service Account for the Thanos Compactor."
+}
+
+variable "thanos_compactor_irsa_role_create" {
+  type        = bool
+  default     = false
+  description = "Whether to create the IRSA role for the Thanos Compactor."
+}
+
+variable "thanos_compactor_irsa_policy_enabled" {
+  type        = bool
+  default     = false
+  description = "Whether to create IAM policy specified by `thanos_compactor_irsa_policy` for the Thanos Compactor. Mutually exclusive with `thanos_compactor_irsa_assume_role_enabled`."
+}
+
+variable "thanos_compactor_irsa_policy" {
+  type        = string
+  default     = ""
+  description = "Policy to be attached to the default role of the Thanos Compactor. Applied only if `thanos_compactor_irsa_policy_enabled` is `true`."
+}
+
+variable "thanos_compactor_irsa_assume_role_enabled" {
+  type        = bool
+  default     = false
+  description = "Whether IRSA for the Thanos Compactor is allowed to assume role defined by `thanos_compactor_irsa_assume_role_arn`. Mutually exclusive with `thanos_compactor_irsa_policy_enabled`."
+}
+
+variable "thanos_compactor_irsa_assume_role_arns" {
+  type        = list(string)
+  default     = []
+  description = "Assume role ARNs for the Thanos Compactor. Applied only if `thanos_compactor_irsa_assume_role_enabled` is `true`."
+}
+
+variable "thanos_compactor_irsa_permissions_boundary" {
+  type        = string
+  default     = null
+  description = "ARN of the policy that is used to set the permissions boundary for the IRSA role of the Thanos Compactor. Defaults to `\"\"`."
 }
 
 variable "thanos_compactor_irsa_additional_policies" {
   type        = map(string)
   default     = {}
-  description = "Map of the additional policies arns to be attached to default role. Where key is arbiraty id and value is policy arn."
+  description = "Map of the additional policies to be attached to default role of the Thanos Compactor. Where key is arbitrary id and value is policy ARN."
 }
-
-variable "thanos_compactor_role_arn" {
-  type        = string
-  default     = ""
-  description = "Whether to create and use default role or use existing role. Useful for a variety of use cases, such as cross account access. Default (empty string) use default generted role."
-}
-
 
 variable "thanos_storegateway_enabled" {
   type        = bool
@@ -183,24 +251,59 @@ variable "thanos_storegateway_enabled" {
   description = "Set to true to enable Thanos Store Gateway component"
 }
 
+variable "thanos_storegateway_service_account_create" {
+  type        = bool
+  default     = true
+  description = "Whether to create the Service Account for the Thanos Store Gateway."
+}
+
 variable "thanos_storegateway_service_account_name" {
   type        = string
   default     = "thanos-storegateway"
-  description = "Name for Thanos Store Gateway Service Account"
+  description = "The name of the Service Account for the Thanos Store Gateway."
+}
+
+variable "thanos_storegateway_irsa_role_create" {
+  type        = bool
+  default     = false
+  description = "Whether to create the IRSA role for the Thanos Store Gateway."
+}
+
+variable "thanos_storegateway_irsa_policy_enabled" {
+  type        = bool
+  default     = false
+  description = "Whether to create IAM policy specified by `thanos_storegateway_irsa_policy` for the Thanos Store Gateway. Mutually exclusive with `thanos_storegateway_irsa_assume_role_enabled`."
+}
+
+variable "thanos_storegateway_irsa_policy" {
+  type        = string
+  default     = ""
+  description = "Policy to be attached to the default role of the Thanos Store Gateway. Applied only if `thanos_storegateway_irsa_policy_enabled` is `true`."
+}
+
+variable "thanos_storegateway_irsa_assume_role_enabled" {
+  type        = bool
+  default     = false
+  description = "Whether IRSA for the Thanos Store Gateway is allowed to assume role defined by `thanos_storegateway_irsa_assume_role_arn`. Mutually exclusive with `thanos_storegateway_irsa_policy_enabled`."
+}
+
+variable "thanos_storegateway_irsa_assume_role_arns" {
+  type        = list(string)
+  default     = []
+  description = "Assume role ARNs for the Thanos Store Gateway. Applied only if `thanos_storegateway_irsa_assume_role_enabled` is `true`."
+}
+
+variable "thanos_storegateway_irsa_permissions_boundary" {
+  type        = string
+  default     = null
+  description = "ARN of the policy that is used to set the permissions boundary for the IRSA role of the Thanos Store Gateway. Defaults to `\"\"`."
 }
 
 variable "thanos_storegateway_irsa_additional_policies" {
   type        = map(string)
   default     = {}
-  description = "Map of the additional policies arns to be attached to default role. Where key is arbiraty id and value is policy arn."
+  description = "Map of the additional policies to be attached to default role of the Thanos Store Gateway. Where key is arbitrary id and value is policy ARN."
 }
-
-variable "thanos_storegateway_role_arn" {
-  type        = string
-  default     = ""
-  description = "Whether to create and use default role or use existing role. Useful for a variety of use cases, such as cross account access. Default (empty string) use default generted role."
-}
-
 
 variable "thanos_ruler_enabled" {
   type        = bool
@@ -208,24 +311,59 @@ variable "thanos_ruler_enabled" {
   description = "Set to true to enable Thanos Ruler component"
 }
 
+variable "thanos_ruler_service_account_create" {
+  type        = bool
+  default     = true
+  description = "Whether to create the Service Account for the Thanos Ruler."
+}
+
 variable "thanos_ruler_service_account_name" {
   type        = string
   default     = "thanos-ruler"
-  description = "Name for Thanos Ruler Service Account"
+  description = "The name of the Service Account for the Thanos Ruler."
+}
+
+variable "thanos_ruler_irsa_role_create" {
+  type        = bool
+  default     = false
+  description = "Whether to create the IRSA role for the Thanos Ruler."
+}
+
+variable "thanos_ruler_irsa_policy_enabled" {
+  type        = bool
+  default     = false
+  description = "Whether to create IAM policy specified by `thanos_ruler_irsa_policy` for the Thanos Ruler. Mutually exclusive with `thanos_ruler_irsa_assume_role_enabled`."
+}
+
+variable "thanos_ruler_irsa_policy" {
+  type        = string
+  default     = ""
+  description = "Policy to be attached to the default role of the Thanos Ruler. Applied only if `thanos_ruler_irsa_policy_enabled` is `true`."
+}
+
+variable "thanos_ruler_irsa_assume_role_enabled" {
+  type        = bool
+  default     = false
+  description = "Whether IRSA for the Thanos Ruler is allowed to assume role defined by `thanos_ruler_irsa_assume_role_arn`. Mutually exclusive with `thanos_ruler_irsa_policy_enabled`."
+}
+
+variable "thanos_ruler_irsa_assume_role_arns" {
+  type        = list(string)
+  default     = []
+  description = "Assume role ARNs for the Thanos Ruler. Applied only if `thanos_ruler_irsa_assume_role_enabled` is `true`."
+}
+
+variable "thanos_ruler_irsa_permissions_boundary" {
+  type        = string
+  default     = null
+  description = "ARN of the policy that is used to set the permissions boundary for the IRSA role of the Thanos Ruler. Defaults to `\"\"`."
 }
 
 variable "thanos_ruler_irsa_additional_policies" {
   type        = map(string)
   default     = {}
-  description = "Map of the additional policies arns to be attached to default role. Where key is arbiraty id and value is policy arn."
+  description = "Map of the additional policies to be attached to default role of the Thanos Ruler. Where key is arbitrary id and value is policy ARN."
 }
-
-variable "thanos_ruler_role_arn" {
-  type        = string
-  default     = ""
-  description = "Whether to create and use default role or use existing role. Useful for a variety of use cases, such as cross account access. Default (empty string) use default generted role."
-}
-
 
 variable "thanos_receive_enabled" {
   type        = bool
@@ -233,24 +371,59 @@ variable "thanos_receive_enabled" {
   description = "Set to true to enable Thanos Receive component"
 }
 
+variable "thanos_receive_service_account_create" {
+  type        = bool
+  default     = true
+  description = "Whether to create the Service Account for the Thanos Receive."
+}
+
 variable "thanos_receive_service_account_name" {
   type        = string
   default     = "thanos-receive"
-  description = "Name for Thanos Receive Service Account"
+  description = "The name of the Service Account for the Thanos Receive."
+}
+
+variable "thanos_receive_irsa_role_create" {
+  type        = bool
+  default     = false
+  description = "Whether to create the IRSA role for the Thanos Receive."
+}
+
+variable "thanos_receive_irsa_policy_enabled" {
+  type        = bool
+  default     = false
+  description = "Whether to create IAM policy specified by `thanos_receive_irsa_policy` for the Thanos Receive. Mutually exclusive with `thanos_receive_irsa_assume_role_enabled`."
+}
+
+variable "thanos_receive_irsa_policy" {
+  type        = string
+  default     = ""
+  description = "Policy to be attached to the default role of the Thanos Receive. Applied only if `thanos_receive_irsa_policy_enabled` is `true`."
+}
+
+variable "thanos_receive_irsa_assume_role_enabled" {
+  type        = bool
+  default     = false
+  description = "Whether IRSA for the Thanos Receive is allowed to assume role defined by `thanos_receive_irsa_assume_role_arn`. Mutually exclusive with `thanos_receive_irsa_policy_enabled`."
+}
+
+variable "thanos_receive_irsa_assume_role_arns" {
+  type        = list(string)
+  default     = []
+  description = "Assume role ARNs for the Thanos Receive. Applied only if `thanos_receive_irsa_assume_role_enabled` is `true`."
+}
+
+variable "thanos_receive_irsa_permissions_boundary" {
+  type        = string
+  default     = null
+  description = "ARN of the policy that is used to set the permissions boundary for the IRSA role of the Thanos Receive. Defaults to `\"\"`."
 }
 
 variable "thanos_receive_irsa_additional_policies" {
   type        = map(string)
   default     = {}
-  description = "Map of the additional policies arns to be attached to default role. Where key is arbiraty id and value is policy arn."
+  description = "Map of the additional policies to be attached to default role of the Thanos Receive. Where key is arbitrary id and value is policy ARN."
 }
-
-variable "thanos_receive_role_arn" {
-  type        = string
-  default     = ""
-  description = "Whether to create and use default role or use existing role. Useful for a variety of use cases, such as cross account access. Default (empty string) use default generted role."
-}
-
 
 variable "thanos_receivedistributor_enabled" {
   type        = bool
@@ -258,288 +431,56 @@ variable "thanos_receivedistributor_enabled" {
   description = "Set to true to enable Thanos Receive Distributor component"
 }
 
+variable "thanos_receivedistributor_service_account_create" {
+  type        = bool
+  default     = true
+  description = "Whether to create the Service Account for the Thanos Receive Distributor."
+}
+
 variable "thanos_receivedistributor_service_account_name" {
   type        = string
   default     = "thanos-receivedistributor"
-  description = "Name for Thanos Receive Distributor Service Account"
+  description = "The name of the Service Account for the Thanos Receive Distributor."
+}
+
+variable "thanos_receivedistributor_irsa_role_create" {
+  type        = bool
+  default     = false
+  description = "Whether to create the IRSA role for the Thanos Receive Distributor."
+}
+
+variable "thanos_receivedistributor_irsa_policy_enabled" {
+  type        = bool
+  default     = false
+  description = "Whether to create IAM policy specified by `thanos_receivedistributor_irsa_policy` for the Thanos Receive Distributor. Mutually exclusive with `thanos_receivedistributor_irsa_assume_role_enabled`."
+}
+
+variable "thanos_receivedistributor_irsa_policy" {
+  type        = string
+  default     = ""
+  description = "Policy to be attached to the default role of the Thanos Receive Distributor. Applied only if `thanos_receivedistributor_irsa_policy_enabled` is `true`."
+}
+
+variable "thanos_receivedistributor_irsa_assume_role_enabled" {
+  type        = bool
+  default     = false
+  description = "Whether IRSA for the Thanos Receive Distributor is allowed to assume role defined by `thanos_receivedistributor_irsa_assume_role_arn`. Mutually exclusive with `thanos_receivedistributor_irsa_policy_enabled`."
+}
+
+variable "thanos_receivedistributor_irsa_assume_role_arns" {
+  type        = list(string)
+  default     = []
+  description = "Assume role ARNs for the Thanos Receive Distributor. Applied only if `thanos_receivedistributor_irsa_assume_role_enabled` is `true`."
+}
+
+variable "thanos_receivedistributor_irsa_permissions_boundary" {
+  type        = string
+  default     = null
+  description = "ARN of the policy that is used to set the permissions boundary for the IRSA role of the Thanos Receive Distributor. Defaults to `\"\"`."
 }
 
 variable "thanos_receivedistributor_irsa_additional_policies" {
   type        = map(string)
   default     = {}
-  description = "Map of the additional policies arns to be attached to default role. Where key is arbiraty id and value is policy arn."
-}
-
-variable "thanos_receivedistributor_role_arn" {
-  type        = string
-  default     = ""
-  description = "Whether to create and use default role or use existing role. Useful for a variety of use cases, such as cross account access. Default (empty string) use default generted role."
-}
-
-variable "argo_namespace" {
-  type        = string
-  default     = "argo"
-  description = "Namespace to deploy ArgoCD application CRD to"
-}
-
-variable "argo_enabled" {
-  type        = bool
-  default     = false
-  description = "If set to true, the module will be deployed as ArgoCD application, otherwise it will be deployed as a Helm release"
-}
-
-variable "argo_helm_enabled" {
-  type        = bool
-  default     = false
-  description = "If set to true, the ArgoCD Application manifest will be deployed using Kubernetes provider as a Helm release. Otherwise it'll be deployed as a Kubernetes manifest. See Readme for more info"
-}
-
-variable "argo_destination_server" {
-  type        = string
-  default     = "https://kubernetes.default.svc"
-  description = "Destination server for ArgoCD Application"
-}
-
-variable "argo_project" {
-  type        = string
-  default     = "default"
-  description = "ArgoCD Application project"
-}
-
-variable "argo_info" {
-  type = list(object({
-    name  = string
-    value = string
-  }))
-  default = [{
-    "name"  = "terraform"
-    "value" = "true"
-  }]
-  description = "ArgoCD info manifest parameter"
-}
-
-variable "argo_sync_policy" {
-  type        = any
-  description = "ArgoCD syncPolicy manifest parameter"
-  default     = {}
-}
-
-variable "argo_metadata" {
-  type = any
-  default = {
-    "finalizers" : [
-      "resources-finalizer.argocd.argoproj.io"
-    ]
-  }
-  description = "ArgoCD Application metadata configuration. Override or create additional metadata parameters"
-}
-
-variable "argo_apiversion" {
-  type        = string
-  default     = "argoproj.io/v1alpha1"
-  description = "ArgoCD Appliction apiVersion"
-}
-
-variable "argo_spec" {
-  type        = any
-  default     = {}
-  description = "ArgoCD Application spec configuration. Override or create additional spec parameters"
-}
-
-variable "argo_helm_values" {
-  type        = string
-  default     = ""
-  description = "Value overrides to use when deploying argo application object with helm"
-}
-
-variable "argo_kubernetes_manifest_computed_fields" {
-  type        = list(string)
-  default     = ["metadata.labels", "metadata.annotations"]
-  description = "List of paths of fields to be handled as \"computed\". The user-configured value for the field will be overridden by any different value returned by the API after apply."
-}
-
-variable "argo_kubernetes_manifest_field_manager_name" {
-  type        = string
-  default     = "Terraform"
-  description = "The name of the field manager to use when applying the kubernetes manifest resource. Defaults to Terraform"
-}
-
-variable "argo_kubernetes_manifest_field_manager_force_conflicts" {
-  type        = bool
-  default     = false
-  description = "Forcibly override any field manager conflicts when applying the kubernetes manifest resource"
-}
-
-variable "argo_kubernetes_manifest_wait_fields" {
-  type        = map(string)
-  default     = {}
-  description = "A map of fields and a corresponding regular expression with a pattern to wait for. The provider will wait until the field matches the regular expression. Use * for any value."
-}
-
-variable "helm_repo_key_file" {
-  type        = string
-  default     = ""
-  description = "Helm repositories cert key file"
-}
-
-variable "helm_repo_cert_file" {
-  type        = string
-  default     = ""
-  description = "Helm repositories cert file"
-}
-
-variable "helm_repo_ca_file" {
-  type        = string
-  default     = ""
-  description = "Helm repositories cert file"
-}
-
-variable "helm_repo_username" {
-  type        = string
-  default     = ""
-  description = "Username for HTTP basic authentication against the helm repository"
-}
-
-variable "helm_repo_password" {
-  type        = string
-  default     = ""
-  description = "Password for HTTP basic authentication against the helm repository"
-}
-
-variable "helm_devel" {
-  type        = bool
-  default     = false
-  description = "Use helm chart development versions, too. Equivalent to version '>0.0.0-0'. If version is set, this is ignored"
-}
-
-variable "helm_package_verify" {
-  type        = bool
-  default     = false
-  description = "Verify the package before installing it. Helm uses a provenance file to verify the integrity of the chart; this must be hosted alongside the chart"
-}
-
-variable "helm_keyring" {
-  type        = string
-  default     = "~/.gnupg/pubring.gpg"
-  description = "Location of public keys used for verification. Used only if helm_package_verify is true"
-}
-
-variable "helm_timeout" {
-  type        = number
-  default     = 300
-  description = "Time in seconds to wait for any individual kubernetes operation (like Jobs for hooks)"
-}
-
-variable "helm_disable_webhooks" {
-  type        = bool
-  default     = false
-  description = "Prevent helm chart hooks from running"
-}
-
-variable "helm_reset_values" {
-  type        = bool
-  default     = false
-  description = "When upgrading, reset the values to the ones built into the helm chart"
-}
-
-variable "helm_reuse_values" {
-  type        = bool
-  default     = false
-  description = "When upgrading, reuse the last helm release's values and merge in any overrides. If 'helm_reset_values' is specified, this is ignored"
-}
-
-variable "helm_force_update" {
-  type        = bool
-  default     = false
-  description = "Force helm resource update through delete/recreate if needed"
-}
-
-variable "helm_recreate_pods" {
-  type        = bool
-  default     = false
-  description = "Perform pods restart during helm upgrade/rollback"
-}
-
-variable "helm_cleanup_on_fail" {
-  type        = bool
-  default     = false
-  description = "Allow deletion of new resources created in this helm upgrade when upgrade fails"
-}
-
-variable "helm_release_max_history" {
-  type        = number
-  default     = 0
-  description = "Maximum number of release versions stored per release"
-}
-
-variable "helm_atomic" {
-  type        = bool
-  default     = false
-  description = "If set, installation process purges chart on fail. The wait flag will be set automatically if atomic is used"
-}
-
-variable "helm_wait" {
-  type        = bool
-  default     = false
-  description = "Will wait until all helm release resources are in a ready state before marking the release as successful. It will wait for as long as timeout"
-}
-
-variable "helm_wait_for_jobs" {
-  type        = bool
-  default     = false
-  description = "If wait is enabled, will wait until all helm Jobs have been completed before marking the release as successful. It will wait for as long as timeout"
-}
-
-variable "helm_skip_crds" {
-  type        = bool
-  default     = false
-  description = "If set, no CRDs will be installed before helm release"
-}
-
-variable "helm_render_subchart_notes" {
-  type        = bool
-  default     = true
-  description = "If set, render helm subchart notes along with the parent"
-}
-
-variable "helm_disable_openapi_validation" {
-  type        = bool
-  default     = false
-  description = "If set, the installation process will not validate rendered helm templates against the Kubernetes OpenAPI Schema"
-}
-
-variable "helm_dependency_update" {
-  type        = bool
-  default     = false
-  description = "Runs helm dependency update before installing the chart"
-}
-
-variable "helm_replace" {
-  type        = bool
-  default     = false
-  description = "Re-use the given name of helm release, only if that name is a deleted release which remains in the history. This is unsafe in production"
-}
-
-variable "helm_description" {
-  type        = string
-  default     = ""
-  description = "Set helm release description attribute (visible in the history)"
-}
-
-variable "helm_lint" {
-  type        = bool
-  default     = false
-  description = "Run the helm chart linter during the plan"
-}
-
-variable "helm_set_sensitive" {
-  type        = map(any)
-  default     = {}
-  description = "Value block with custom sensitive values to be merged with the values yaml that won't be exposed in the plan's diff"
-}
-
-variable "helm_postrender" {
-  type        = map(any)
-  default     = {}
-  description = "Value block with a path to a binary file to run after helm renders the manifest which can alter the manifest contents"
+  description = "Map of the additional policies to be attached to default role of the Thanos Receive Distributor. Where key is arbitrary id and value is policy ARN."
 }
