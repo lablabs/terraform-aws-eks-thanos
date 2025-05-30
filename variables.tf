@@ -25,8 +25,14 @@ variable "query_service_account_name" {
 
 variable "query_irsa_role_create" {
   type        = bool
-  default     = false
+  default     = true
   description = "Whether to create the IRSA role for the Thanos query."
+}
+
+variable "query_irsa_role_name" {
+  type        = string
+  default     = "thanos-query"
+  description = "IRSA role name for the Thanos query."
 }
 
 variable "query_irsa_policy_enabled" {
@@ -79,7 +85,7 @@ variable "queryfrontend_service_account_create" {
 
 variable "queryfrontend_service_account_name" {
   type        = string
-  default     = "thanos-queryfrontend"
+  default     = "thanos-query-frontend"
   description = "The name of the Service Account for the Thanos Query Frontend."
 }
 
@@ -87,6 +93,12 @@ variable "queryfrontend_irsa_role_create" {
   type        = bool
   default     = false
   description = "Whether to create the IRSA role for the Thanos Query Frontend."
+}
+
+variable "queryfrontend_irsa_role_name" {
+  type        = string
+  default     = "thanos-queryfrontend"
+  description = "IRSA role name for the Thanos Query Frontend."
 }
 
 variable "queryfrontend_irsa_policy_enabled" {
@@ -145,8 +157,14 @@ variable "bucketweb_service_account_name" {
 
 variable "bucketweb_irsa_role_create" {
   type        = bool
-  default     = false
+  default     = true
   description = "Whether to create the IRSA role for the Thanos Bucket Web."
+}
+
+variable "bucketweb_irsa_role_name" {
+  type        = string
+  default     = "thanos-bucketweb"
+  description = "IRSA role name for the Thanos Bucket Web."
 }
 
 variable "bucketweb_irsa_policy_enabled" {
@@ -205,8 +223,14 @@ variable "compactor_service_account_name" {
 
 variable "compactor_irsa_role_create" {
   type        = bool
-  default     = false
+  default     = true
   description = "Whether to create the IRSA role for the Thanos Compactor."
+}
+
+variable "compactor_irsa_role_name" {
+  type        = string
+  default     = "thanos-compactor"
+  description = "IRSA role name for the Thanos Compactor."
 }
 
 variable "compactor_irsa_policy_enabled" {
@@ -265,8 +289,14 @@ variable "storegateway_service_account_name" {
 
 variable "storegateway_irsa_role_create" {
   type        = bool
-  default     = false
+  default     = true
   description = "Whether to create the IRSA role for the Thanos Store Gateway."
+}
+
+variable "storegateway_irsa_role_name" {
+  type        = string
+  default     = "thanos-storegateway"
+  description = "IRSA role name for the Thanos Store Gateway."
 }
 
 variable "storegateway_irsa_policy_enabled" {
@@ -329,6 +359,12 @@ variable "ruler_irsa_role_create" {
   description = "Whether to create the IRSA role for the Thanos Ruler."
 }
 
+variable "ruler_irsa_role_name" {
+  type        = string
+  default     = "thanos-ruler"
+  description = "IRSA role name for the Thanos Ruler."
+}
+
 variable "ruler_irsa_policy_enabled" {
   type        = bool
   default     = false
@@ -389,6 +425,12 @@ variable "receive_irsa_role_create" {
   description = "Whether to create the IRSA role for the Thanos Receive."
 }
 
+variable "receive_irsa_role_name" {
+  type        = string
+  default     = "thanos-receive"
+  description = "IRSA role name for the Thanos Receive."
+}
+
 variable "receive_irsa_policy_enabled" {
   type        = bool
   default     = false
@@ -447,6 +489,12 @@ variable "receivedistributor_irsa_role_create" {
   type        = bool
   default     = false
   description = "Whether to create the IRSA role for the Thanos Receive Distributor."
+}
+
+variable "receivedistributor_irsa_role_name" {
+  type        = string
+  default     = "thanos-receivedistributor"
+  description = "IRSA role name for the Thanos Receive Distributor."
 }
 
 variable "receivedistributor_irsa_policy_enabled" {

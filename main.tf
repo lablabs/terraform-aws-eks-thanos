@@ -20,6 +20,7 @@ locals {
       service_account_name   = var.query_service_account_name
 
       irsa_role_create          = var.query_irsa_role_create
+      irsa_role_name            = var.query_irsa_role_name
       irsa_policy_enabled       = var.query_irsa_policy_enabled
       irsa_policy               = var.query_irsa_policy
       irsa_assume_role_enabled  = var.query_irsa_assume_role_enabled
@@ -32,6 +33,7 @@ locals {
       service_account_name   = var.queryfrontend_service_account_name
 
       irsa_role_create          = var.queryfrontend_irsa_role_create
+      irsa_role_name            = var.queryfrontend_irsa_role_name
       irsa_policy_enabled       = var.queryfrontend_irsa_policy_enabled
       irsa_policy               = var.queryfrontend_irsa_policy
       irsa_assume_role_enabled  = var.queryfrontend_irsa_assume_role_enabled
@@ -44,6 +46,7 @@ locals {
       service_account_name   = var.bucketweb_service_account_name
 
       irsa_role_create          = var.bucketweb_irsa_role_create
+      irsa_role_name            = var.bucketweb_irsa_role_name
       irsa_policy_enabled       = var.bucketweb_irsa_policy_enabled
       irsa_policy               = var.bucketweb_irsa_policy
       irsa_assume_role_enabled  = var.bucketweb_irsa_assume_role_enabled
@@ -56,6 +59,7 @@ locals {
       service_account_name   = var.compactor_service_account_name
 
       irsa_role_create          = var.compactor_irsa_role_create
+      irsa_role_name            = var.compactor_irsa_role_name
       irsa_policy_enabled       = var.compactor_irsa_policy_enabled
       irsa_policy               = var.compactor_irsa_policy
       irsa_assume_role_enabled  = var.compactor_irsa_assume_role_enabled
@@ -68,6 +72,7 @@ locals {
       service_account_name   = var.storegateway_service_account_name
 
       irsa_role_create          = var.storegateway_irsa_role_create
+      irsa_role_name            = var.storegateway_irsa_role_name
       irsa_policy_enabled       = var.storegateway_irsa_policy_enabled
       irsa_policy               = var.storegateway_irsa_policy
       irsa_assume_role_enabled  = var.storegateway_irsa_assume_role_enabled
@@ -80,6 +85,7 @@ locals {
       service_account_name   = var.ruler_service_account_name
 
       irsa_role_create          = var.ruler_irsa_role_create
+      irsa_role_name            = var.ruler_irsa_role_name
       irsa_policy_enabled       = var.ruler_irsa_policy_enabled
       irsa_policy               = var.ruler_irsa_policy
       irsa_assume_role_enabled  = var.ruler_irsa_assume_role_enabled
@@ -92,6 +98,7 @@ locals {
       service_account_name   = var.receive_service_account_name
 
       irsa_role_create          = var.receive_irsa_role_create
+      irsa_role_name            = var.receive_irsa_role_name
       irsa_policy_enabled       = var.receive_irsa_policy_enabled
       irsa_policy               = var.receive_irsa_policy
       irsa_assume_role_enabled  = var.receive_irsa_assume_role_enabled
@@ -104,6 +111,7 @@ locals {
       service_account_name   = var.receivedistributor_service_account_name
 
       irsa_role_create          = var.receivedistributor_irsa_role_create
+      irsa_role_name            = var.receivedistributor_irsa_role_name
       irsa_policy_enabled       = var.receivedistributor_irsa_policy_enabled
       irsa_policy               = var.receivedistributor_irsa_policy
       irsa_assume_role_enabled  = var.receivedistributor_irsa_assume_role_enabled
@@ -144,7 +152,7 @@ locals {
       }
     }
 
-    buckeweb = {
+    bucketweb = {
       enabled = var.bucketweb_enabled
       serviceAccount = {
         create = module.addon-irsa["bucketweb"].service_account_create

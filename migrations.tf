@@ -14,21 +14,41 @@ moved {
 }
 
 moved {
-  from = aws_iam_role.this
-  to   = module.addon-irsa["thanos"].aws_iam_role.this
+  from = aws_iam_role.this["query"]
+  to   = module.addon-irsa["query"].aws_iam_role.this[0]
 }
 
 moved {
-  from = aws_iam_policy.this
-  to   = module.addon-irsa["thanos"].aws_iam_policy.this
+  from = aws_iam_role.this["queryfrontend"]
+  to   = module.addon-irsa["queryfrontend"].aws_iam_role.this[0]
 }
 
 moved {
-  from = aws_iam_role_policy_attachment.this
-  to   = module.addon-irsa["thanos"].aws_iam_role_policy_attachment.this
+  from = aws_iam_role.this["bucketweb"]
+  to   = module.addon-irsa["bucketweb"].aws_iam_role.this[0]
 }
 
 moved {
-  from = aws_iam_role_policy_attachment.this_additional
-  to   = module.addon-irsa["thanos"].aws_iam_role_policy_attachment.this_additional
+  from = aws_iam_role.this["compactor"]
+  to   = module.addon-irsa["compactor"].aws_iam_role.this[0]
+}
+
+moved {
+  from = aws_iam_role.this["storegateway"]
+  to   = module.addon-irsa["storegateway"].aws_iam_role.this[0]
+}
+
+moved {
+  from = aws_iam_role.this["ruler"]
+  to   = module.addon-irsa["ruler"].aws_iam_role.this[0]
+}
+
+moved {
+  from = aws_iam_role.this["receive"]
+  to   = module.addon-irsa["receive"].aws_iam_role.this[0]
+}
+
+moved {
+  from = aws_iam_role.this["receivedistributor"]
+  to   = module.addon-irsa["receivedistributor"].aws_iam_role.this[0]
 }
