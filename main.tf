@@ -11,7 +11,7 @@ locals {
     name = "thanos"
 
     helm_chart_version = "17.3.1"
-    helm_repo_url      = "https://lablabs.github.io/bitnami-thanos-helm-chart/"
+    helm_repo_url      = "ghcr.io/lablabs/bitnami-helm-charts"
   }
 
   addon_irsa = {
